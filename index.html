@@ -19,6 +19,8 @@
             --accent: #3498db;
             --border: #e1e8ed;
             --nav-bg: #ffffff;
+            --visited: #3498db;
+            --visited-hover: #2980b9;
         }
 
         [data-theme="dark"] {
@@ -29,6 +31,8 @@
             --accent: #5dade2;
             --border: #404040;
             --nav-bg: #1a1a1a;
+            --visited: #5dade2;
+            --visited-hover: #85c1e9;
         }
 
         body {
@@ -121,6 +125,15 @@
             width: 200px;
             height: 200px;
             border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .profile-photo-placeholder {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
             background: var(--bg-secondary);
             border: 3px solid var(--border);
             display: flex;
@@ -175,10 +188,6 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             background: var(--bg-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
         }
 
         .demo-placeholder {
@@ -199,16 +208,59 @@
             margin-bottom: 1rem;
         }
 
-        .world-map {
+        .world-map-container {
             background: var(--bg-secondary);
             border-radius: 8px;
             padding: 2rem;
             margin: 2rem 0;
+        }
+
+        .world-map {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .map-legend {
             text-align: center;
-            min-height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .country {
+            fill: #ddd;
+            stroke: #fff;
+            stroke-width: 0.5;
+            transition: fill 0.3s ease;
+        }
+
+        [data-theme="dark"] .country {
+            fill: #444;
+            stroke: #666;
+        }
+
+        .country.visited {
+            fill: var(--visited);
+        }
+
+        .country.visited:hover {
+            fill: var(--visited-hover);
+        }
+
+        .tooltip {
+            position: absolute;
+            padding: 8px 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 1000;
         }
 
         .travel-grid {
@@ -223,6 +275,13 @@
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid var(--border);
+        }
+
+        .travel-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
         }
 
         .travel-card .image-placeholder {
@@ -293,6 +352,7 @@
 
             nav ul {
                 gap: 1rem;
+                font-size: 0.9rem;
             }
 
             .travel-grid {
@@ -302,6 +362,8 @@
     </style>
 </head>
 <body>
+    <div class="tooltip" id="tooltip"></div>
+    
     <nav>
         <div class="container">
             <div class="logo">Michael Khalfin</div>
@@ -320,27 +382,24 @@
         <!-- Home Page -->
         <div id="home" class="page active">
             <div class="hero">
-                <div class="profile-photo">
-                    [Profile Photo Placeholder]
-                </div>
+                <img src="images/web_profile.jpg" alt="Michael Khalfin" class="profile-photo">
                 <div class="hero-content">
                     <h1>Michael Khalfin</h1>
                     <p>Fourth-year student at Rice University</p>
                     <p>B.S. Operations Research | B.A. Mathematics</p>
                     <p style="margin-top: 1.5rem;">I am broadly interested in mathematical programming, online algorithms, and optimization under uncertainty.</p>
                     <div class="contact-links">
-                        <a href="mailto:mlk15@rice.edu">mlk15@rice.edu</a>
-                        <a href="https://linkedin.com/in/michael-khalfin" target="_blank">LinkedIn</a>
+                        <a href="mailto:mlkpad14@gmail.com">mlkpad14@gmail.com</a>
                     </div>
                 </div>
             </div>
             
             <h2>About</h2>
             <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem;">
-                I'm a fourth-year undergraduate at Rice University graduating in December 2026 with a B.S. in Operations Research and a B.A. in Mathematics. I spent Spring 2024 studying abroad at Budapest Semesters in Mathematics, where I deepened my understanding of discrete mathematics and combinatorics.
+                I'm a fourth-year undergraduate at Rice University graduating in December 2026 with a B.S. in Operations Research and a B.A. in Mathematics. I spent Spring 2024 studying abroad at Budapest Semesters in Mathematics, where I deepened my understanding of discrete math and combinatorics.
             </p>
             <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem; margin-top: 1rem;">
-                Currently, I'm conducting research on online algorithms with Professor Sebastian Perez-Salazar and working as an Operations Research intern at Sandia National Laboratories. My research focuses on decision-making under uncertainty, competitive analysis, and data-driven optimization methods.
+                Currently, I'm conducting research on online algorithms and working as an Operations Research intern at Sandia National Laboratories.
             </p>
         </div>
 
@@ -348,7 +407,8 @@
         <div id="cv" class="page">
             <h2>Curriculum Vitae</h2>
             <div class="cv-embed">
-                <p>PDF embedding placeholder - Upload your CV PDF here</p>
+                <!-- Replace with your CV PDF -->
+                <embed src="cv.pdf" type="application/pdf" width="100%" height="100%">
             </div>
         </div>
 
@@ -377,51 +437,50 @@
             <h2>About Me</h2>
             
             <h3>Where I've Traveled</h3>
-            <div class="world-map">
-                <p style="color: var(--text-secondary);">
-                    [Interactive world map placeholder - Regions visited: United States, Europe, Caucasus, Central Asia]
-                </p>
-            </div>
+            <!-- <div class="world-map-container"> -->
+            <img src="images/map.png" alt="Map" class="world-map">
+            <!-- </div> -->
 
+            <br>
             <h3>Travel Stories</h3>
             <div class="travel-grid">
                 <div class="travel-card">
-                    <div class="image-placeholder">[Photo 1]</div>
+                    <img src="images/travel1.jpg" alt="Story 1">
                     <div class="content">
-                        <h3>Story Title 1</h3>
-                        <p>[Brief anecdote about a memorable travel experience. Replace this with your own story and photo.]</p>
+                        <h3>Harvesting Flowers in Alaska</h3>
+                        <p>For several weeks, I worked on a small peonies farm in Homer, AK. We picked, cleaned, and packed the flowers for shipping. The living experience was really rustic. It was nice to live in nature, as it felt peaceful and restful.</p>
                     </div>
                 </div>
 
                 <div class="travel-card">
-                    <div class="image-placeholder">[Photo 2]</div>
+                    <img src="images/travel2.jpg" alt="Story 2">
                     <div class="content">
-                        <h3>Story Title 2</h3>
-                        <p>[Brief anecdote about a memorable travel experience. Replace this with your own story and photo.]</p>
+                        <h3>Chess @ Széchenyi Bath</h3>
+                        <p>My first time meeting "chess tourists" was in the Hungarian thermal bath house. They were visiting from Denmark and Moldova. My friend and I and three Kazakh college students were their challengers; we had a tournament lasting several hours!</p>
                     </div>
                 </div>
 
                 <div class="travel-card">
-                    <div class="image-placeholder">[Photo 3]</div>
+                    <img src="images/travel3.jpg" alt="Story 3">
                     <div class="content">
-                        <h3>Story Title 3</h3>
-                        <p>[Brief anecdote about a memorable travel experience. Replace this with your own story and photo.]</p>
+                        <h3>Biking in Hungary</h3>
+                        <p>My friend and I planned a trip to Eger. I assumed we were taking public transportation, but little did I know that we would cycle ~30 miles that day. During the cycling, we bought and drank a whole liter of grape juice.</p>
                     </div>
                 </div>
 
                 <div class="travel-card">
-                    <div class="image-placeholder">[Photo 4]</div>
+                    <img src="images/travel4.jpg" alt="Story 4">
                     <div class="content">
-                        <h3>Story Title 4</h3>
-                        <p>[Brief anecdote about a memorable travel experience. Replace this with your own story and photo.]</p>
+                        <h3>Traditional Bavarian Breakfast</h3>
+                        <p>I was visiting my friend at the University of Regensburg for his 21st birthday. After a night of sports pubs and debauchery, he treated us to a traditional sausage, pretzel, and coffee breakfast.</p>
                     </div>
                 </div>
 
                 <div class="travel-card">
-                    <div class="image-placeholder">[Photo 5]</div>
+                    <img src="images/travel5.jpg" alt="Story 5">
                     <div class="content">
-                        <h3>Story Title 5</h3>
-                        <p>[Brief anecdote about a memorable travel experience. Replace this with your own story and photo.]</p>
+                        <h3>Polar Plunge</h3>
+                        <p>One of my favorite activities is polar plunging. It is a test of my discipline and feels so great after a dry sauna. This picture is of me in a village near Stockholm in 33 degree Fahrenheit water.</p>
                     </div>
                 </div>
             </div>
@@ -462,7 +521,6 @@
         const themeToggle = document.getElementById('themeToggle');
         const html = document.documentElement;
         
-        // Check for saved theme preference
         const currentTheme = localStorage.getItem('theme') || 'light';
         html.setAttribute('data-theme', currentTheme);
         themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
@@ -485,15 +543,34 @@
                 e.preventDefault();
                 const targetId = link.getAttribute('href').substring(1);
                 
-                // Update active states
                 navLinks.forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
                 
                 pages.forEach(page => page.classList.remove('active'));
                 document.getElementById(targetId).classList.add('active');
                 
-                // Scroll to top
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Map tooltip
+        const tooltip = document.getElementById('tooltip');
+        const countries = document.querySelectorAll('.country');
+
+        countries.forEach(country => {
+            country.addEventListener('mouseenter', (e) => {
+                const name = country.getAttribute('data-name');
+                tooltip.textContent = name;
+                tooltip.style.opacity = '1';
+            });
+
+            country.addEventListener('mousemove', (e) => {
+                tooltip.style.left = (e.pageX + 10) + 'px';
+                tooltip.style.top = (e.pageY + 10) + 'px';
+            });
+
+            country.addEventListener('mouseleave', () => {
+                tooltip.style.opacity = '0';
             });
         });
     </script>
