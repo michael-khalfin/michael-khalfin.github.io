@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Secretary Problem: Interference Analysis</title>
+
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Plotly for interactive plots -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #2c3e50;
+            --text-secondary: #5a6c7d;
+            --accent: #3498db;
+            --border: #e1e8ed;
+            --success: #06A77D;
+            --warning: #F77F00;
+            --danger: #D62828;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #e4e4e4;
+            --text-secondary: #b0b0b0;
+            --accent: #5dade2;
+            --border: #404040;
+            --success: #06A77D;
+            --warning: #F77F00;
+            --danger: #D62828;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin: 2rem 0 1rem 0;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem 0;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin: 1rem 0;
+            color: var(--text-secondary);
+        }
+
+        .collapsible {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 1rem;
+            width: 100%;
+            border: 1px solid var(--border);
+            text-align: left;
+            outline: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .collapsible:hover {
+            background-color: var(--border);
+        }
+
+        .collapsible:after {
+            content: '\002B';
+            color: var(--accent);
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+
+        .collapsible.active:after {
+            content: "\2212";
+        }
+
+        .content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: var(--bg-primary);
+            border-left: 3px solid var(--accent);
+            padding: 0 1rem;
+        }
+
+        .content.active {
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-top: none;
+        }
+
+        .math-block {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .content ul {
+            margin: 1rem 0;
+            padding-left: 2.5rem;
+        }
+
+        .content li {
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .interactive-section {
+            background-color: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .controls {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: var(--bg-primary);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        select, input[type="range"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        input[type="range"] {
+            padding: 0;
+            height: 2.5rem;
+        }
+
+        .slider-value {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .plot-container {
+            margin: 2rem 0;
+            background-color: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 6px;
+            min-height: 500px;
+            width: 100%;
+        }
+
+        #spectrum-plots {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        #surface-plots {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            #surface-plots {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .results-box {
+            background-color: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 6px;
+            border-left: 4px solid var(--success);
+            margin: 1rem 0;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stat-value {
+            color: var(--accent);
+            font-family: 'Courier New', monospace;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Demo 1: Collecting Data About Algorithms</h1>
+
+    <p style="font-size: 1.1rem; margin: 1.5rem 0;">
+        An interactive exploration of the performance spectrum of ordinal algorithms for k-secretary.
+        Based on research by <a href="https://www.jstor.org/stable/24540892" target="_blank" style="color: var(--accent);">Buchbinder, Jain, Singh (2014)</a>
+        and <a href="https://epubs.siam.org/doi/10.1137/1.9781611973730.78" target="_blank" style="color: var(--accent);">Chan, Chen, Jiang (2015)</a>.
+    </p>
+
+    <!-- Mathematical Introduction -->
+    <button class="collapsible">Problem Setup</button>
+    <div class="content">
+        <h3>The K-Secretary Problem</h3>
+        <p>
+            <strong>Input:</strong> \(n\) items arrive in uniformly random order with a total ordering
+            (only relative comparisons are observable). An algorithm has \(K\) quotas for selecting items,
+            and decisions are irrevocable.
+        </p>
+        <p>
+            <strong>Goal:</strong> Maximize
+            \(\mathbb{E}[\text{number of selected items among the } K \text{ best overall}]\)
+        </p>
+        <div class="math-block">
+            $$\text{Competitive Ratio} = \frac{\mathbb{E}[\text{number selected among } K \text{ best}]}{K}$$
+        </div>
+    </div>
+
+    <button class="collapsible">Key Definitions</button>
+    <div class="content">
+        <h3>K-Potential</h3>
+        <p>
+            An item arriving at step \(i\) is a <strong>\(k\)-potential</strong> if it ranks among the top \(k\) items
+            seen so far (steps \(1, \ldots, i\)). This is the only information available to an ordinal algorithm.
+        </p>
+        <div class="math-block">
+            $$\text{k-potential} = \text{rank } k \text{ among items } \{1, \ldots, i\}$$
+        </div>
+
+        <h3>Ordinal Algorithm</h3>
+        <p>
+            An <strong>ordinal algorithm</strong> makes selection decisions based solely on relative rankings,
+            not cardinal values. It can only observe whether the current item is a 1-potential, 2-potential, ..., or K-potential.
+        </p>
+
+        <h3>Quotas</h3>
+        <p>
+            The algorithm has \(K\) quotas \(Q_1, Q_2, \ldots, Q_K\) for selecting items. Once a quota is used,
+            it cannot be reused. The algorithm must decide at each step \(i\) whether to use a remaining quota
+            to select the current item.
+        </p>
+    </div>
+
+    <button class="collapsible">Linear Programming Formulation</button>
+    <div class="content">
+        <h3>Decision Variables</h3>
+        <p>For each quota \(Q_j\) (\(j = 1, \ldots, K\)), k-potential (\(k = 1, \ldots, K\)), and step \(i\) (\(i = 1, \ldots, n\)):</p>
+        <div class="math-block">
+            $$z_{j|k}(i) = \Pr[\text{item at step } i \text{ selected using quota } Q_j \mid \text{it is a } k\text{-potential}]$$
+        </div>
+        <p>with bounds \(0 \leq z_{j|k}(i) \leq 1\) for all \(j, k, i\).</p>
+
+        <h3>Objective Function</h3>
+        <p>Maximize the expected number of selected items among the \(K\) best:</p>
+        <div class="math-block">
+            $$\max \sum_{j=1}^K \sum_{k=1}^K \sum_{i=1}^n \frac{1}{n} \sum_{\ell=k}^K \delta_{k|\ell}(i) \cdot z_{j|k}(i)$$
+        </div>
+        <p>where \(\delta_{k|\ell}(i)\) is the probability that the item at step \(i\) is a \(k\)-potential given it is the \(\ell\)-th best overall:</p>
+        <div class="math-block">
+            $$\delta_{k|\ell}(i) = \frac{\binom{n-i}{\ell-k} \binom{i-1}{k-1}}{\binom{n-1}{\ell-1}}$$
+        </div>
+
+        <h3>Constraints</h3>
+        <p><strong>1. Consistency Constraints</strong> (for \(j = 1, \ldots, K-1\)):</p>
+        <p>For each quota \(Q_j\), k-potential, and step \(i\):</p>
+        <div class="math-block">
+            $$z_{j|k}(i) \leq \sum_{m=1}^{i-1} \sum_{\ell=1}^K \frac{1}{m} \left[ z_{j+1|\ell}(m) - z_{j|\ell}(m) \right]$$
+        </div>
+        <p>These constraints ensure that the probability of using quota \(Q_j\) at step \(i\) is consistent with having previously used quotas \(Q_{j+1}, \ldots, Q_K\) but not yet used \(Q_j\).</p>
+
+        <p><strong>2. Final Quota Constraints</strong> (for \(j = K\)):</p>
+        <p>For the last quota \(Q_K\), at each step \(i\):</p>
+        <div class="math-block">
+            $$z_{K|k}(i) \leq 1 - \sum_{m=1}^{i-1} \sum_{\ell=1}^K \frac{1}{m} z_{K|\ell}(m)$$
+        </div>
+
+        <h3>Interpretation</h3>
+        <p>The LP encodes the optimal randomized online algorithm for the K-secretary problem. Each variable \(z_{j|k}(i)\) represents the conditional selection probability at step \(i\), conditioned on the item being a \(k\)-potential (i.e., among the top \(k\) items seen so far).</p>
+    </div>
+
+    <button class="collapsible">Optimal K-Threshold Algorithm</button>
+    <div class="content">
+        <h3>Algorithm Structure</h3>
+        <p>
+            The optimal solution to the LP defines a <strong>K-threshold algorithm</strong>: at each step \(i\),
+            the algorithm observes the current item's k-potential status and randomly selects it with probability \(z_{j|k}(i)\)
+            using quota \(Q_j\).
+        </p>
+
+        <h3>Key Properties</h3>
+        <ul>
+            <li><strong>Ordinal:</strong> Decisions depend only on relative rankings (k-potential), not cardinal values</li>
+            <li><strong>Randomized:</strong> Selection probabilities are fractional, requiring randomization</li>
+            <li><strong>Online:</strong> Irrevocable decisions made at each step without knowledge of future items</li>
+            <li><strong>Optimal:</strong> Achieves the best possible competitive ratio among all ordinal algorithms</li>
+        </ul>
+
+        <h3>Performance</h3>
+        <p>
+            For \(n = 30\) and \(K = 2\), the optimal LP solution achieves:
+        </p>
+        <div class="math-block">
+            $$V_{\text{best}} \approx 1.013 \quad \Rightarrow \quad \text{CR} \approx 0.506$$
+        </div>
+        <p>
+            This means the algorithm selects approximately 50.6% of the top 2 items on average.
+        </p>
+    </div>
+
+    <button class="collapsible">Interference Framework</button>
+    <div class="content">
+        <h3>Analyzing the Class of Ordinal Algorithms</h3>
+        <p>
+            The LP solution finds a single, fully optimal algorithm. We can, however, analyze the <em>class</em> of ordinal algorithms by parameterizing them.
+        </p>
+        <p>
+            We formalize this by introducing an external agent ("nature") that has a "budget" \(B\). This budget allows the agent to choose \(B\) of the algorithm's decision variables and fix them to specific values \(\vec{c}\). This defines a subclass of algorithms, allowing us to analyze the performance spectrum.
+        </p>
+
+        <h3>Formalization</h3>
+        <p>
+            Let \(y \in \{0,1\}^{\text{vars}}\) be a binary vector indicating which variables nature fixes, with \(\sum_v y_v = B\).
+            For simplicity, we consider the case where nature fixes variables to zero (\(\vec{c} = \vec{0}\)).
+            The modified LP becomes:
+        </p>
+        <div class="math-block">
+            $$Q(y) = \max \sum_{j,k,i} c_{j|k}(i) \cdot z_{j|k}(i)$$
+            $$\text{subject to: LP constraints, and } z_{j|k}(i) = 0 \text{ for all } (j,k,i) \text{ where } y_{j,k,i} = 1$$
+        </div>
+
+        <h3>Performance Bounds</h3>
+        <p><strong>Best-case performance:</strong></p>
+        <div class="math-block">
+            $$V_{\text{best}}(B) = \max_{y: \sum y_v = B} Q(y) = V_{\text{best}}(0)$$
+        </div>
+        <p><strong>Worst-case performance:</strong></p>
+        <div class="math-block">
+            $$V_{\text{worst}}(B) = \min_{y: \sum y_v = B} Q(y)$$
+        </div>
+        <p>Computing \(V_{\text{worst}}(B)\) requires solving \(\binom{|\text{vars}|}{B}\) LPs (one for each choice of \(B\) variables). For small \(B\), this is feasible via enumeration. (For larger \(B\) we can later implement a dualized and combined formulation and/or decomposition techniques.)</p>
+
+        <h3>Interference Parameter \(\alpha\)</h3>
+        <p>
+            The interference parameter \(\alpha \in [0,1]\) parameterizes the performance degradation threshold.
+            For given budget \(B\) and interference level \(\alpha\), we identify which variable configurations \(y\) achieve performance:
+        </p>
+        <div class="math-block">
+            $$Q(y) \geq (1-\alpha) V_{\text{best}}(B) + \alpha V_{\text{worst}}(B)$$
+        </div>
+        <p><strong>Interpretation:</strong></p>
+        <ul>
+            <li>\(\alpha = 0\): Only configurations with optimal performance (no degradation)</li>
+            <li>\(\alpha \in (0,1)\): Configurations with intermediate performance degradation</li>
+            <li>\(\alpha = 1\): All configurations, including the worst-case</li>
+        </ul>
+
+        <h3>The \(\alpha\)-Spectrum</h3>
+        <p>
+            By sweeping \(\alpha\) from 0 to 1, we obtain the <strong>\(\alpha\)-spectrum</strong>: a curve showing how performance degrades
+            as we relax the quality threshold.
+        </p>
+
+        <p><strong>Immediate Insights:</strong> The spectrum directly reveals:</p>
+        <ul>
+            <li>How quickly does performance drop as \(\alpha\) increases?</li>
+            <li>Which algorithm steps \(i\) are most vulnerable to interference?</li>
+            <li>Which quotas \(Q_j\) and potentials \(k\) are most critical?</li>
+        </ul>
+
+        <p><strong>Connection to DIAL:</strong> Beyond these immediate observations, the \(\alpha\)-spectrum embodies the core principle of <strong>DIAL (Data-driven Interpretability of Algorithm Logic)</strong> introduced on the front page. By "turning the dial" from \(\alpha = 0\) (optimal) to \(\alpha = 1\) (worst-case), we systematically probe the algorithm's behavior under varying levels of interdiction. This traces the full performance spectrum and maps out a multi-dimensional response surface where performance is a direct function of the interdiction strategy. The broader purpose includes:</p>
+        <ul>
+            <li>Understanding the <em>shape of the manifold</em> describing how different interference configurations affect performance</li>
+            <li>Applying <em>statistical methods</em> to identify patterns and structure in the performance landscape</li>
+            <li>Comparing algorithms by analyzing their respective response surfaces</li>
+        </ul>
+    </div>
+
+    <!-- Interactive Section 1: V_worst Explorer -->
+    <h2>Interactive Demo: V<sub>worst</sub> Explorer</h2>
+
+    <div class="interactive-section">
+        <h3>Configuration</h3>
+        <p>Select which variables nature can interfere with:</p>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="quota-select">Quota:</label>
+                <select id="quota-select">
+                    <option value="0">Q₁ (Quota 1)</option>
+                    <option value="1" selected>Q₂ (Quota 2)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="kpot-select">K-potential:</label>
+                <select id="kpot-select">
+                    <option value="0" selected>1-potential</option>
+                    <option value="1">2-potential</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="budget-slider">
+                    Budget B: <span class="slider-value" id="budget-value">1</span>
+                </label>
+                <input type="range" id="budget-slider" min="1" max="3" value="1" step="1">
+            </div>
+        </div>
+
+        <button onclick="runVWorstAnalysis()">Run Analysis</button>
+
+        <div id="vworst-results" class="loading">
+            Select parameters and click "Run Analysis" to see results.
+        </div>
+    </div>
+
+    <!-- Interactive Section 2: α-Spectrum -->
+    <h2>Interactive Demo: Interference Spectrum</h2>
+
+    <div class="interactive-section">
+        <h3>Configuration</h3>
+        <p>Explore the full α-spectrum showing performance degradation:</p>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="spectrum-quota">Quota:</label>
+                <select id="spectrum-quota">
+                    <option value="0">Q₁ (Quota 1)</option>
+                    <option value="1" selected>Q₂ (Quota 2)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="spectrum-kpot">K-potential:</label>
+                <select id="spectrum-kpot">
+                    <option value="0" selected>1-potential</option>
+                    <option value="1">2-potential</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="spectrum-budget">
+                    Budget B: <span class="slider-value" id="spectrum-budget-value">1</span>
+                </label>
+                <input type="range" id="spectrum-budget" min="1" max="3" value="1" step="1">
+            </div>
+        </div>
+
+        <button onclick="runSpectrumAnalysis()">Generate Spectrum</button>
+
+        <div id="spectrum-plots">
+            <div class="plot-container" id="spectrum-plot-1"></div>
+            <div class="plot-container" id="spectrum-plot-2"></div>
+            <div class="plot-container" id="spectrum-plot-3"></div>
+        </div>
+    </div>
+
+    <!-- Interactive Section 3: 3D Surface -->
+    <h2>Interactive Demo: 3D Surface Analysis</h2>
+
+    <div class="interactive-section">
+        <h3>Configuration</h3>
+        <p>Visualize the complete performance landscape across both budget B and interference α:</p>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="surface-quota">Quota:</label>
+                <select id="surface-quota">
+                    <option value="0">Q₁ (Quota 1)</option>
+                    <option value="1" selected>Q₂ (Quota 2)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="surface-kpot">K-potential:</label>
+                <select id="surface-kpot">
+                    <option value="0" selected>1-potential</option>
+                    <option value="1">2-potential</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="surface-bmax">
+                    Max B: <span class="slider-value" id="surface-bmax-value">3</span>
+                </label>
+                <input type="range" id="surface-bmax" min="2" max="3" value="3" step="1">
+            </div>
+        </div>
+
+        <button onclick="runSurfaceAnalysis()">Generate 3D Surface</button>
+
+        <div id="surface-plots">
+            <div class="plot-container" id="surface-plot-3d"></div>
+            <div class="plot-container" id="surface-plot-contour"></div>
+        </div>
+    </div>
+
+    <script>
+        // Global data cache
+        let dataCache = {};
+
+        // Load all data files
+        async function loadData() {
+            try {
+                const baseConfig = await fetch('data/base_config.json').then(r => r.json());
+                const vWorstAll = await fetch('data/v_worst_all.json').then(r => r.json());
+                const spectrumAll = await fetch('data/spectrum_all.json').then(r => r.json());
+                const surfaceAll = await fetch('data/surface_all.json').then(r => r.json());
+
+                dataCache = {
+                    base: baseConfig,
+                    vWorst: vWorstAll,
+                    spectrum: spectrumAll,
+                    surface: surfaceAll
+                };
+
+                console.log('Data loaded successfully:', dataCache);
+
+                // Show available configurations
+                console.log('Available V_worst configs:', Object.keys(dataCache.vWorst || {}));
+                console.log('Available spectrum configs:', Object.keys(dataCache.spectrum || {}));
+                console.log('Available surface configs:', Object.keys(dataCache.surface || {}));
+            } catch (error) {
+                console.error('Error loading data:', error);
+                console.error('Error details:', error.message);
+                alert('Error loading data files. Please ensure you are viewing this via http://localhost:8000');
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', async () => {
+            await loadData();
+            console.log('Page loaded and data initialized');
+        });
+
+        // Update slider values
+        document.getElementById('budget-slider').addEventListener('input', function() {
+            document.getElementById('budget-value').textContent = this.value;
+        });
+
+        document.getElementById('spectrum-budget').addEventListener('input', function() {
+            document.getElementById('spectrum-budget-value').textContent = this.value;
+        });
+
+        document.getElementById('surface-bmax').addEventListener('input', function() {
+            document.getElementById('surface-bmax-value').textContent = this.value;
+        });
+
+        // Collapsible sections
+        const collapsibles = document.querySelectorAll('.collapsible');
+        collapsibles.forEach(button => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                content.classList.toggle('active');
+
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+
+        // V_worst Analysis
+        function runVWorstAnalysis() {
+            if (!dataCache.vWorst || !dataCache.base) {
+                document.getElementById('vworst-results').innerHTML =
+                    `<p style="color: var(--danger);">Data not loaded yet. Please wait...</p>`;
+                return;
+            }
+
+            const quota = parseInt(document.getElementById('quota-select').value);
+            const kpot = parseInt(document.getElementById('kpot-select').value);
+            const budget = parseInt(document.getElementById('budget-slider').value);
+
+            const configKey = `Q${quota+1}_k${kpot+1}`;
+            const data = dataCache.vWorst[configKey];
+
+            if (!data) {
+                document.getElementById('vworst-results').innerHTML =
+                    `<p style="color: var(--danger);">No data available for ${configKey}. Try Q2 and 1-potential.</p>`;
+                return;
+            }
+
+            const budgetData = data.budgets[budget.toString()];
+            const resultsDiv = document.getElementById('vworst-results');
+
+            if (!budgetData) {
+                resultsDiv.innerHTML = `<p style="color: var(--danger);">No data available for Budget B=${budget}. Try B=1, 2, or 3.</p>`;
+                return;
+            }
+
+            resultsDiv.innerHTML = `
+                <div class="results-box">
+                    <h3>Results</h3>
+                    <div class="stat">
+                        <span class="stat-label">V<sub>best</sub>:</span>
+                        <span class="stat-value">${dataCache.base.v_best.toFixed(6)}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">V<sub>worst</sub>(B=${budget}):</span>
+                        <span class="stat-value">${budgetData.v_worst.toFixed(6)}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">CR<sub>best</sub>:</span>
+                        <span class="stat-value">${dataCache.base.cr_best.toFixed(6)}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">CR<sub>worst</sub>:</span>
+                        <span class="stat-value">${budgetData.cr_worst.toFixed(6)}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Performance Gap:</span>
+                        <span class="stat-value">${budgetData.gap_pct.toFixed(2)}%</span>
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 1.5rem;">Worst-case Variables (fixed to 0):</h4>
+                <ul style="margin-left: 2rem; color: var(--text-secondary);">
+                    ${budgetData.worst_vars_readable.map(v => `<li>${v}</li>`).join('')}
+                </ul>
+            `;
+        }
+
+        // Spectrum Analysis
+        function runSpectrumAnalysis() {
+            if (!dataCache.spectrum || !dataCache.base) {
+                alert('Data not loaded yet. Please wait...');
+                return;
+            }
+
+            const quota = parseInt(document.getElementById('spectrum-quota').value);
+            const kpot = parseInt(document.getElementById('spectrum-kpot').value);
+            const budget = parseInt(document.getElementById('spectrum-budget').value);
+
+            const configKey = `Q${quota+1}_k${kpot+1}`;
+
+            if (!dataCache.spectrum[configKey]) {
+                alert(`No data available for ${configKey}. Try Q2 and 1-potential.`);
+                return;
+            }
+
+            const data = dataCache.spectrum[configKey][`B${budget}`];
+
+            if (!data) {
+                alert(`No data available for Budget B=${budget}. Try B=1, 2, or 3.`);
+                return;
+            }
+
+            const spectrum = data.spectrum;
+
+            // Plot 1: Performance Degradation
+            const trace1 = {
+                x: spectrum.alpha,
+                y: spectrum.cr,
+                mode: 'lines+markers',
+                name: 'Worst-case CR',
+                line: {color: '#2E86AB', width: 2},
+                marker: {size: 6}
+            };
+
+            const trace2 = {
+                x: spectrum.alpha,
+                y: spectrum.threshold.map(t => t / dataCache.base.K),
+                mode: 'lines',
+                name: 'Threshold',
+                line: {color: '#A23B72', dash: 'dash', width: 2}
+            };
+
+            const layout1 = {
+                title: {
+                    text: 'Performance Degradation under Interference',
+                    font: {size: 16}
+                },
+                xaxis: {
+                    title: {text: 'Interference Parameter α', font: {size: 14}},
+                    showgrid: true,
+                    zeroline: false
+                },
+                yaxis: {
+                    title: {text: 'Competitive Ratio', font: {size: 14}},
+                    showgrid: true,
+                    zeroline: false
+                },
+                hovermode: 'closest',
+                showlegend: true,
+                legend: {x: 0.02, y: 0.98},
+                height: 500,
+                margin: {l: 60, r: 40, t: 60, b: 60},
+                autosize: true
+            };
+
+            Plotly.newPlot('spectrum-plot-1', [trace1, trace2], layout1, {responsive: true});
+
+            // Plot 2: Critical Variables (scatter)
+            const xData = [];
+            const yData = [];
+
+            spectrum.steps.forEach((steps, idx) => {
+                steps.forEach(step => {
+                    xData.push(spectrum.alpha[idx]);
+                    yData.push(step);
+                });
+            });
+
+            const trace3 = {
+                x: xData,
+                y: yData,
+                mode: 'markers',
+                type: 'scatter',
+                marker: {
+                    color: '#F77F00',
+                    size: 8,
+                    opacity: 0.7
+                },
+                name: 'Critical Steps'
+            };
+
+            const layout2 = {
+                title: {
+                    text: 'Critical Variables',
+                    font: {size: 16}
+                },
+                xaxis: {
+                    title: {text: 'Interference Parameter α', font: {size: 14}},
+                    showgrid: true
+                },
+                yaxis: {
+                    title: {text: 'Step i (1-indexed)', font: {size: 14}},
+                    showgrid: true
+                },
+                hovermode: 'closest',
+                height: 500,
+                margin: {l: 60, r: 40, t: 60, b: 60},
+                autosize: true
+            };
+
+            Plotly.newPlot('spectrum-plot-2', [trace3], layout2, {responsive: true});
+
+            // Plot 3: Step Frequency
+            const stepFrequency = new Array(dataCache.base.n).fill(0);
+            spectrum.steps.forEach(steps => {
+                steps.forEach(step => {
+                    stepFrequency[step - 1]++;
+                });
+            });
+
+            const stepFrequencyPct = stepFrequency.map(f => (f / spectrum.alpha.length) * 100);
+
+            const trace4 = {
+                y: Array.from({length: dataCache.base.n}, (_, i) => i + 1),
+                x: stepFrequencyPct,
+                type: 'bar',
+                orientation: 'h',
+                marker: {
+                    color: stepFrequencyPct,
+                    colorscale: 'YlOrRd',
+                    reversescale: true,
+                    showscale: false,
+                }
+            };
+
+            const layout3 = {
+                title: {
+                    text: 'Step Frequency Distribution',
+                    font: {size: 16}
+                },
+                xaxis: {
+                    title: {text: 'Frequency (%)', font: {size: 14}},
+                    showgrid: true
+                },
+                yaxis: {
+                    title: {text: 'Step i (1-indexed)', font: {size: 14}},
+                    showgrid: true
+                },
+                height: 600,
+                margin: {l: 60, r: 40, t: 60, b: 60},
+                autosize: true
+            };
+
+            Plotly.newPlot('spectrum-plot-3', [trace4], layout3, {responsive: true});
+        }
+
+        // 3D Surface Analysis
+        function runSurfaceAnalysis() {
+            if (!dataCache.surface || !dataCache.base) {
+                alert('Data not loaded yet. Please wait...');
+                return;
+            }
+
+            const quota = parseInt(document.getElementById('surface-quota').value);
+            const kpot = parseInt(document.getElementById('surface-kpot').value);
+            const bmax = parseInt(document.getElementById('surface-bmax').value);
+
+            const configKey = `Q${quota+1}_k${kpot+1}`;
+            const data = dataCache.surface[configKey];
+
+            if (!data) {
+                alert(`No data available for ${configKey}. Try Q2 and 1-potential.`);
+                return;
+            }
+
+            // Filter data to only include B values up to bmax
+            const alphaGrid = data.alpha_grid;
+            const BRange = data.B_range.filter(b => b <= bmax);
+            const crSurface = data.cr_surface.filter((row, idx) => data.B_range[idx] <= bmax);
+
+            // Create meshgrid for plotting
+            const Alpha = [];
+            const BMesh = [];
+            const CRSurface = [];
+
+            for (let i = 0; i < BRange.length; i++) {
+                const alphaRow = [];
+                const bRow = [];
+                const crRow = [];
+
+                for (let j = 0; j < alphaGrid.length; j++) {
+                    alphaRow.push(alphaGrid[j]);
+                    bRow.push(BRange[i]);
+                    crRow.push(crSurface[i][j]);
+                }
+
+                Alpha.push(alphaRow);
+                BMesh.push(bRow);
+                CRSurface.push(crRow);
+            }
+
+            // Plot 1: 3D Surface (single color as requested)
+            const surfaceTrace = {
+                type: 'surface',
+                x: Alpha,
+                y: BMesh,
+                z: CRSurface,
+                colorscale: [[0, '#5dade2'], [1, '#5dade2']], // Single color (accent blue)
+                showscale: false,
+                contours: {
+                    z: {
+                        show: true,
+                        usecolormap: false,
+                        highlightcolor: "#444",
+                        project: {z: false}
+                    }
+                }
+            };
+
+            const layout3d = {
+                title: {
+                    text: `CR Surface: Q${quota+1}, ${kpot+1}-potential`,
+                    font: {size: 16}
+                },
+                scene: {
+                    xaxis: {title: {text: 'Interference α', font: {size: 12}}},
+                    yaxis: {title: {text: 'Budget B', font: {size: 12}}},
+                    zaxis: {title: {text: 'Competitive Ratio', font: {size: 12}}},
+                    camera: {
+                        eye: {x: 1.5, y: 1.5, z: 1.3}
+                    }
+                },
+                height: 600,
+                margin: {l: 0, r: 0, b: 0, t: 60},
+                autosize: true
+            };
+
+            Plotly.newPlot('surface-plot-3d', [surfaceTrace], layout3d, {responsive: true});
+
+            // Plot 2: 2D Contour (using viridis colormap as requested)
+            const contourTrace = {
+                type: 'contour',
+                x: alphaGrid,
+                y: BRange,
+                z: crSurface,
+                colorscale: 'Viridis',
+                contours: {
+                    showlabels: true,
+                    labelfont: {
+                        size: 10,
+                        color: 'white'
+                    }
+                },
+                colorbar: {
+                    title: 'CR',
+                    titleside: 'right'
+                }
+            };
+
+            const layoutContour = {
+                title: {
+                    text: 'CR Contour Plot',
+                    font: {size: 16}
+                },
+                xaxis: {
+                    title: {text: 'Interference Parameter α', font: {size: 14}},
+                    showgrid: true
+                },
+                yaxis: {
+                    title: {text: 'Budget B', font: {size: 14}},
+                    showgrid: true
+                },
+                height: 600,
+                margin: {l: 60, r: 60, t: 60, b: 60},
+                autosize: true
+            };
+
+            Plotly.newPlot('surface-plot-contour', [contourTrace], layoutContour, {responsive: true});
+        }
+    </script>
+</body>
+</html>

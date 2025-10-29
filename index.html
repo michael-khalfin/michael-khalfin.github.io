@@ -182,6 +182,14 @@
             color: var(--text-primary);
         }
 
+        .slideshow-embed {
+            width: 100%;
+            height: 800px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-secondary);
+        }
+
         .cv-embed {
             width: 100%;
             height: 800px;
@@ -370,6 +378,7 @@
             <ul>
                 <li><a href="#home" class="nav-link active">Home</a></li>
                 <li><a href="#cv" class="nav-link">CV</a></li>
+                <li><a href="#slides" class="nav-link">Slides</a></li>
                 <li><a href="#demo1" class="nav-link">Demo 1</a></li>
                 <li><a href="#demo2" class="nav-link">Demo 2</a></li>
                 <li><a href="#about" class="nav-link">About Me</a></li>
@@ -396,10 +405,16 @@
             
             <h2>Summary</h2>
             <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem;">
-                I'm a fourth-year undergraduate at Rice University graduating in December 2026 with a B.S. in Operations Research and a B.A. in Mathematics. I spent Spring 2024 studying abroad at Budapest Semesters in Mathematics, where I deepened my understanding of discrete math and combinatorics.
+                I'm a fourth-year undergraduate at Rice University graduating in May 2026 with a B.S. in Operations Research and a B.A. in Mathematics. I spent Spring 2024 studying abroad at Budapest Semesters in Mathematics, where I deepened my understanding of discrete math and combinatorics.
             </p>
             <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem; margin-top: 1rem;">
-                Currently, I'm conducting research on online algorithms and working as an Operations Research intern at Sandia National Laboratories.
+                My research focuses on interpretable algorithms and data-driven optimization. Inspired by my mentors, Sebastian Perez-Salazar and Emma Savannah Johnson, and my incredible team at Sandia National Labs, I am developing a framework called DIAL: Data-driven Interpretability of Algorithm Logic. 
+            </p>
+            <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem; margin-top: 1rem;">
+                The goal of DIAL is to understand algorithms using polyhedral abstract interpretation. Once we have embedded or over-approximated an algorithm as a polytope, we can equip this polytope with an objective to optimize, resulting in a linear program (LP). The framework is named 'DIAL' because it allows us to systematically probe this LP. By "turning a dial," we can decide how much to interdict the optimization. This traces the full spectrum of performance—from the unconstrained optimum (the max solution) to the fully adversarial, worst-case outcome (the min-max solution). This process maps out a multi-dimensional response surface, where the algorithm's objective value is a direct function of the interdiction strategy.
+            </p>
+            <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem; margin-top: 1rem;">
+                This website contains several of my research ideas surrounding DIAL, including slides, a demo on ordinal threshold algorithms for k-secretary, and applications to neural network interpretability.
             </p>
         </div>
 
@@ -412,14 +427,19 @@
             </div>
         </div>
 
+        <div id="slides" class="page">
+            <h2>Sandia National Laboratories Slides</h2>
+            <div class="slideshow-embed">
+                <embed src="Uncertainty_Quantification_for_Systems.pdf" type="application/pdf" width="100%" height="100%">
+            </div>
+            <p style="color: var(--text-secondary); margin-top: 1rem; font-size: 1rem;">
+                PDF slideshow summarizing some of my Sandia National Laboratories work.
+            </p>
+        </div>
+
         <!-- Demo 1 Page -->
         <div id="demo1" class="page">
-            <h2>Research Demo 1</h2>
-            <div class="demo-placeholder">
-                <h3>Interactive Demo Placeholder</h3>
-                <p>This page will contain your first interactive research demonstration.</p>
-                <p style="margin-top: 1rem;">Convert your Jupyter notebook code to an interactive web demo here.</p>
-            </div>
+            <iframe src="demo1.html" style="width: 100%; height: 100vh; border: none;"></iframe>
         </div>
 
         <!-- Demo 2 Page -->
@@ -436,12 +456,12 @@
         <div id="about" class="page">
             <h2>About Me</h2>
             
-            <h3>Where I've Traveled</h3>
+            <!-- <h3>Where I've Traveled</h3> -->
             <!-- <div class="world-map-container"> -->
-            <img src="images/map.png" alt="Map" class="world-map">
+            <!-- <img src="images/map.png" alt="Map" class="world-map"> -->
             <!-- </div> -->
 
-            <br>
+            <!-- <br> -->
             <h3>Travel Stories</h3>
             <div class="travel-grid">
                 <div class="travel-card">
@@ -534,24 +554,44 @@
             themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
         });
 
-        // Navigation
+        // Hash-based navigation
         const navLinks = document.querySelectorAll('.nav-link');
         const pages = document.querySelectorAll('.page');
 
+        function showPage(hash) {
+            // Remove # from hash, default to 'home' if no hash
+            const targetId = hash ? hash.substring(1) : 'home';
+
+            // Check if the target page exists
+            const targetPage = document.getElementById(targetId);
+            if (!targetPage) return;
+
+            // Update active states
+            navLinks.forEach(l => l.classList.remove('active'));
+            const activeLink = document.querySelector(`.nav-link[href="#${targetId}"]`);
+            if (activeLink) activeLink.classList.add('active');
+
+            pages.forEach(page => page.classList.remove('active'));
+            targetPage.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Handle navigation clicks
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href').substring(1);
-                
-                navLinks.forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-                
-                pages.forEach(page => page.classList.remove('active'));
-                document.getElementById(targetId).classList.add('active');
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // Let the default behavior happen (hash will update)
+                // The hashchange event will handle the page switch
             });
         });
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', () => {
+            showPage(window.location.hash);
+        });
+
+        // Show initial page based on URL hash
+        showPage(window.location.hash || '#home');
 
         // Map tooltip
         const tooltip = document.getElementById('tooltip');

@@ -1,0 +1,282 @@
+{
+  "Q1_k1": {
+    "quota": 0,
+    "k_potential": 0,
+    "num_vars": 29,
+    "budgets": {
+      "1": {
+        "v_worst": 1.0019257559005839,
+        "cr_worst": 0.5009628779502919,
+        "gap_pct": 1.0978639771678294,
+        "worst_vars": [
+          [
+            0,
+            0,
+            21
+          ]
+        ],
+        "worst_vars_readable": [
+          "Q1, 1-pot, step 22"
+        ]
+      },
+      "2": {
+        "v_worst": 0.990878359486031,
+        "cr_worst": 0.4954391797430155,
+        "gap_pct": 2.18837502197889,
+        "worst_vars": [
+          [
+            0,
+            0,
+            21
+          ],
+          [
+            0,
+            0,
+            22
+          ]
+        ],
+        "worst_vars_readable": [
+          "Q1, 1-pot, step 22",
+          "Q1, 1-pot, step 23"
+        ]
+      },
+      "3": {
+        "v_worst": 0.9795995350157717,
+        "cr_worst": 0.48979976750788584,
+        "gap_pct": 3.30173080245043,
+        "worst_vars": [
+          [
+            0,
+            0,
+            21
+          ],
+          [
+            0,
+            0,
+            22
+          ],
+          [
+            0,
+            0,
+            23
+          ]
+        ],
+        "worst_vars_readable": [
+          "Q1, 1-pot, step 22",
+          "Q1, 1-pot, step 23",
+          "Q1, 1-pot, step 24"
+        ]
+      }
+    }
+  },
+  "Q1_k2": {
+    "quota": 0,
+    "k_potential": 1,
+    "num_vars": 29,
+    "budgets": {
+      "1": {
+        "v_worst": 1.0026774260361462,
+        "cr_worst": 0.5013387130180731,
+        "gap_pct": 1.0236650841322241,
+        "worst_vars": [
+          [
+            0,
+            1,
+            29
+          ]
+        ],
+        "worst_vars_readable": [
+          "Q1, 2-pot, step 30"
+        ]
+      },
+      "2": {
+        "v_worst": 0.9928376559238565,
+        "cr_worst": 0.49641882796192827,
+        "gap_pct": 1.9949688722101429,
+        "worst_vars": [
+          [
+            0,
+            1,
+            28
+          ],
+          [
+            0,
+            1,
+            29
+          ]
+        ],
+        "worst_vars_readable": [
+          "Q1, 2-pot, step 29",
+          "Q1, 2-pot, step 30"
+        ]
+      },
+      "3": {
+        "v_worst": 0.9834956127637104,
+        "cr_worst": 0.4917478063818552,
+        "gap_pct": 2.917141017116672,
+        "worst_vars": [
+          [
+            0,
+            1,
+            27
+          ],
+          [
+            0,
+            1,
+            28
+          ],
+          [
+            0,
+            1,
+            29
+          ]
+        ],
+        "worst_vars_readable": [
+          "Q1, 2-pot, step 28",
+          "Q1, 2-pot, step 29",
+          "Q1, 2-pot, step 30"
+        ]
+      }
+    }
+  },
+  "Q2_k1": {
+    "quota": 1,
+    "k_potential": 0,
+    "num_vars": 29,
+    "budgets": {
+      "1": {
+        "v_worst": 0.9987709763193582,
+        "cr_worst": 0.4993854881596791,
+        "gap_pct": 1.4092787076774569,
+        "worst_vars": [
+          [
+            1,
+            0,
+            12
+          ]
+        ],
+        "worst_vars_readable": [
+          "Q2, 1-pot, step 13"
+        ]
+      },
+      "2": {
+        "v_worst": 0.9833879083714367,
+        "cr_worst": 0.4916939541857184,
+        "gap_pct": 2.9277727374733717,
+        "worst_vars": [
+          [
+            1,
+            0,
+            11
+          ],
+          [
+            1,
+            0,
+            12
+          ]
+        ],
+        "worst_vars_readable": [
+          "Q2, 1-pot, step 12",
+          "Q2, 1-pot, step 13"
+        ]
+      },
+      "3": {
+        "v_worst": 0.966819992113038,
+        "cr_worst": 0.483409996056519,
+        "gap_pct": 4.563225561949551,
+        "worst_vars": [
+          [
+            1,
+            0,
+            11
+          ],
+          [
+            1,
+            0,
+            12
+          ],
+          [
+            1,
+            0,
+            13
+          ]
+        ],
+        "worst_vars_readable": [
+          "Q2, 1-pot, step 12",
+          "Q2, 1-pot, step 13",
+          "Q2, 1-pot, step 14"
+        ]
+      }
+    }
+  },
+  "Q2_k2": {
+    "quota": 1,
+    "k_potential": 1,
+    "num_vars": 29,
+    "budgets": {
+      "1": {
+        "v_worst": 1.0090130310333207,
+        "cr_worst": 0.5045065155166604,
+        "gap_pct": 0.39826458561497813,
+        "worst_vars": [
+          [
+            1,
+            1,
+            23
+          ]
+        ],
+        "worst_vars_readable": [
+          "Q2, 2-pot, step 24"
+        ]
+      },
+      "2": {
+        "v_worst": 1.0048956056745164,
+        "cr_worst": 0.5024478028372582,
+        "gap_pct": 0.8047040453275308,
+        "worst_vars": [
+          [
+            1,
+            1,
+            23
+          ],
+          [
+            1,
+            1,
+            24
+          ]
+        ],
+        "worst_vars_readable": [
+          "Q2, 2-pot, step 24",
+          "Q2, 2-pot, step 25"
+        ]
+      },
+      "3": {
+        "v_worst": 1.0005822048213853,
+        "cr_worst": 0.5002911024106926,
+        "gap_pct": 1.2304886460177507,
+        "worst_vars": [
+          [
+            1,
+            1,
+            22
+          ],
+          [
+            1,
+            1,
+            23
+          ],
+          [
+            1,
+            1,
+            24
+          ]
+        ],
+        "worst_vars_readable": [
+          "Q2, 2-pot, step 23",
+          "Q2, 2-pot, step 24",
+          "Q2, 2-pot, step 25"
+        ]
+      }
+    }
+  }
+}
