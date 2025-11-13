@@ -1,0 +1,471 @@
+{
+  "papers": [
+    {
+      "id": "biology-of-LLM",
+      "title": "On the Biology of a Large Language Model",
+      "url": "https://transformer-circuits.pub/2025/attribution-graphs/biology.html",
+      "categories": ["interpretability", "LLM"],
+      "notes": "",
+      "year": 2025,
+      "priority": "high",
+      "related_to": []
+    },
+    {
+      "id": "SMC",
+      "title": "SMC: Satisfiability Modulo Convex Optimization",
+      "url": "https://dl.acm.org/doi/abs/10.1145/3049797.3049819",
+      "categories": ["logic"],
+      "notes": "",
+      "year": 2017,
+      "priority": "low",
+      "related_to": []
+    },
+    {
+      "id": "SyReNN",
+      "title": "SyReNN: A tool for analyzing deep neural networks",
+      "url": "https://thakur.cs.ucdavis.edu/assets/pubs/STTT2023.pdf",
+      "categories": ["neural-networks", "interpretability"],
+      "notes": "",
+      "year": 2021,
+      "priority": "low",
+      "related_to": []
+    },
+    {
+      "id": "DPLL",
+      "title": "A Fast Linear-Arithmetic Solver for DPLL(T)",
+      "url": "https://yices.csl.sri.com/papers/cav06.pdf",
+      "categories": ["logic"],
+      "notes": "",
+      "year": 2006,
+      "priority": "low",
+      "related_to": []
+    },
+    {
+      "id": "contextual-optimization",
+      "title": "A survey of contextual optimization methods for decision-making under uncertainty",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0377221724002200",
+      "categories": ["data-driven-optimization"],
+      "notes": "",
+      "year": 2025,
+      "priority": "medium",
+      "related_to": []
+    },
+    {
+      "id": "llm-for-math",
+      "title": "Large Language Models for Mathematicians",
+      "url": "https://arxiv.org/html/2312.04556v1/#S3",
+      "categories": ["LLM"],
+      "notes": "Also includes a nice overview of Transformer architecture",
+      "year": 2023,
+      "priority": "medium",
+      "related_to": ["minerva"]
+    },
+    {
+      "id": "minerva",
+      "title": "Minerva: Solving Quantitative Reasoning Problems with Language Models",
+      "url": "https://research.google/blog/minerva-solving-quantitative-reasoning-problems-with-language-models/",
+      "categories": ["LLM"],
+      "notes": "",
+      "year": 2022,
+      "priority": "low"
+    },
+    {
+      "id": "bayesian-lp",
+      "title": "Controlled Discovery and Localization of Signals via Bayesian Linear Programming",
+      "url": "https://lucasjanson.fas.harvard.edu/papers/Controlled_Discovery_And_Localization_Of_Signals_Via_Bayesian_Linear_Programming-Spector_Janson-2022.pdf",
+      "categories": ["stats"],
+      "notes": "Interested in formulation of Bayesian Linear Programming (BLiP)",
+      "year": 2022,
+      "priority": "medium"
+    },
+    {
+      "id": "jiang-ma-zhang",
+      "title": "Tightness without Counterexamples: A New Approach and New Results for Prophet Inequalities",
+      "url": "https://jiashuo3.github.io/docs/Tightness.pdf",
+      "categories": ["online-algorithms", "LP"],
+      "year": 2025,
+      "priority": "medium"
+    },
+    {
+      "id": "",
+      "title": "Online Convex Programming and Generalized Infinitesimal Gradient Ascent",
+      "url": "https://cdn.aaai.org/ICML/2003/ICML03-120.pdf",
+      "categories": ["online-algorithms"],
+      "year": 2003,
+      "notes": "Iterative programming (the objective changes @ each step)",
+      "priority": "low"
+    },
+    {
+      "id": "scifi-paper-writing",
+      "title": "Scientific Paper Writing",
+      "url": "https://github.com/acmi-lab/cmu-10717-the-art-of-the-paper/tree/main/resources",
+      "categories": ["misc"],
+      "year": 2023,
+      "notes": "A course by Zachary Lipton",
+      "priority": "high"
+    },
+    {
+      "id": "cauchy-schwartz-masterclass",
+      "title": "An Introduction to the Art of Mathematical Inequalities",
+      "url": "https://www.isinj.com/mt-usamo/An%20Introduction%20To%20The%20Art%20of%20Mathematical%20Inequalities%20-%20Steele,%20J.%20Michael%20%20(2004,%20MAA).pdf",
+      "categories": ["misc"],
+      "year": 2004,
+      "priority": "high"
+    },
+    {
+      "id": "quantum-intro",
+      "title": "An Introduction to Quantum Computing, Without the Physics",
+      "url": "https://arxiv.org/pdf/1708.03684",
+      "categories": ["misc"],
+      "year": 2020,
+      "priority": "medium"
+    },
+    {
+      "id": "lin-thesis",
+      "title": "Structure-Driven Algorithm Design in Optimization and Machine Learning",
+      "url": "https://www2.eecs.berkeley.edu/Pubs/TechRpts/2023/EECS-2023-71.pdf",
+      "priority": "medium",
+      "year": 2023,
+      "categories": ["data-driven-optimization"]
+    },
+    {
+      "id": "sd-gupta-thesis",
+      "title": "Advances in Computer-Assisted Design and Analysis of First-Order Optimization Methods and Related Problems",
+      "url": "https://dspace.mit.edu/bitstream/handle/1721.1/155495/DasGupta-sdgupta-phd-orc-2024-thesis.pdf?sequence=1&isAllowed=y",
+      "priority": "low",
+      "year": 2024,
+      "categories": ["data-driven-optimization"]
+    },
+    {
+      "id": "liu-xu-23",
+      "title": "Interpretable neural networks: principles and applications",
+      "url": "https://www.frontiersin.org/journals/artificial-intelligence/articles/10.3389/frai.2023.974295/full",
+      "priority": "low",
+      "year": 2023,
+      "categories": ["neural-networks", "interpretability"]
+    },
+    {
+      "id": "albarghouthi21",
+      "title": "Introduction to Neural Network Verification",
+      "url": "https://verifieddeeplearning.com/",
+      "year": 2021,
+      "categories": ["neural-networks", "interpretability"],
+      "priority": "medium",
+      "read": true
+    },
+    {
+      "id": "singh17",
+      "title": "Fast polyhedra abstract domain",
+      "url": "https://dl.acm.org/doi/abs/10.1145/3009837.3009885",
+      "year": 2017,
+      "categories": ["interpretability"],
+      "related_to": ["albarghouthi21"],
+      "priority": "medium"
+    },
+    {
+      "id": "singh19",
+      "title": "An abstract domain for certifying neural networks",
+      "url": "https://dl.acm.org/doi/abs/10.1145/3290354",
+      "year": 2019,
+      "categories": ["interpretability", "neural-networks"],
+      "related_to": ["albarghouthi21", "singh17"],
+      "priority": "medium"
+    },
+    {
+      "id": "singh21",
+      "title": "Scalable Polyhedral Verification of Recurrent Neural Networks",
+      "url": "https://link.springer.com/chapter/10.1007/978-3-030-81685-8_10",
+      "year": 2021,
+      "categories": ["neural-networks", "interpretability"],
+      "priority": "low",
+      "related_to": ["singh19"]
+    },
+    {
+      "id": "elboher20",
+      "title": "An Abstraction-Based Framework for Neural Network Verification",
+      "url": "https://link.springer.com/chapter/10.1007/978-3-030-53288-8_3",
+      "year": 2020,
+      "categories": ["neural-networks", "interpretability"],
+      "priority": "low",
+      "related_to": ["singh21"]
+    },
+    {
+      "id": "cousot05",
+      "title": "Course: Abstract Interpretation",
+      "url": "https://web.mit.edu/afs/athena.mit.edu/course/16/16.399/www/",
+      "year": 2005,
+      "categories": ["interpretability"],
+      "priority": "medium",
+      "related_to": ["static-analysis"]
+    },
+    {
+      "id": "static-analysis",
+      "title": "Abstract Interpretation in a Nutshell",
+      "url": "https://www.di.ens.fr/~cousot/AI/IntroAbsInt.html",
+      "categories": ["interpretability"],
+      "related_to": ["singh17"],
+      "priority": "medium"
+    },
+    {
+      "id": "owhadi23",
+      "title": "Do ideas have shape? Idea registration as the continuous limit of artificial neural networks",
+      "url": "https://authors.library.caltech.edu/records/p1ver-k8122",
+      "year": 2023,
+      "categories": ["neural-networks"],
+      "priority": "medium"
+    },
+    {
+      "id": "horton23",
+      "title": "Large Language Models as Simulated Economic Agents: What Can We Learn from Homo Silicus?",
+      "url": "https://www.nber.org/system/files/working_papers/w31122/w31122.pdf",
+      "year": 2023,
+      "categories": ["LLM"],
+      "priority": "medium"
+    },
+    {
+      "id": "fish25",
+      "title": "Algorithmic Collusion by Large Language Models",
+      "url": "https://arxiv.org/pdf/2404.00806",
+      "year": 2025,
+      "categories": ["LLM"],
+      "priority": "low"
+    },
+    {
+      "id": "simon96",
+      "title": "The Sciences of the Artificial",
+      "url": "https://monoskop.org/images/9/9c/Simon_Herbert_A_The_Sciences_of_the_Artificial_3rd_ed.pdf",
+      "year": 1996,
+      "categories": ["misc"],
+      "priority": "low",
+      "related_to": ["fish25"]
+    },
+    {
+      "id": "lipton17",
+      "title": "The Mythos of Model Interpretability",
+      "url": "https://arxiv.org/pdf/1606.03490",
+      "year": 2017,
+      "categories": ["interpretability"],
+      "priority": "high",
+      "read": true
+    },
+    {
+      "id": "huchette25",
+      "title": "When Deep Learning Meets Polyhedral Theory: A Survey",
+      "url": "https://arxiv.org/html/2305.00241v4#S2",
+      "year": 2025,
+      "categories": ["neural-networks"],
+      "priority": "high"
+    },
+    {
+      "id": "black22",
+      "title": "Interpreting Neural Networks through the Polytope Lens",
+      "url": "https://arxiv.org/pdf/2211.12312",
+      "year": 2022,
+      "categories": ["interpretability", "neural-networks"],
+      "priority": "high",
+      "related_to": ["huchette25"]
+    },
+    {
+      "id": "primal-dual",
+      "title": "The primal-dual method for approximation algorithms and its application to network design problems",
+      "url": "https://math.mit.edu/~goemans/PAPERS/book-ch4.pdf",
+      "year": 1996,
+      "categories": ["LP"],
+      "priority": "high"
+    },
+    {
+      "id": "huang24",
+      "title": "Online Primal Dual Meets Online Matching with Stochastic Rewards: Configuration LP to the Rescue",
+      "url": "https://epubs.siam.org/doi/10.1137/21M1454705#:~:text=They%20use%20a%20factor%20revealing,a%20natural%20generalization%20of%20Ranking",
+      "year": 2024,
+      "categories": ["LP", "online-algorithms"],
+      "priority": "medium"
+    },
+    {
+      "id": "buchbinder09",
+      "title": "The Design of Competitive Online Algorithms via a Primal-Dual Approach",
+      "url": "https://www.tau.ac.il/~nivb/download/pd-survey.pdf",
+      "year": 2009,
+      "categories": ["LP", "online-algorithms"],
+      "priority": "high",
+      "related_to": "primal-dual"
+    },
+    {
+      "id": "jan03",
+      "title": "Greedy Facility Location Algorithms Analyzed Using Dual Fitting with Factor-Revealing LP",
+      "url": "https://www.math.cmu.edu/~jvera/informs/facloc/jacm.pdf",
+      "year": 2003,
+      "categories": ["LP"],
+      "priority": "low"
+    },
+    {
+      "id": "kolter18",
+      "title": "Provable Defenses against Adversarial Examples via the Convex Outer Adversarial Polytope",
+      "url": "https://arxiv.org/pdf/1711.00851",
+      "year": 2018,
+      "categories": ["neural-networks"],
+      "priority": "low"
+    },
+    {
+      "id": "bertsimas18",
+      "title": "The Voice of Optimization",
+      "url": "https://arxiv.org/abs/1812.09991",
+      "year": 2018,
+      "categories": ["interpretability", "MIP"],
+      "priority": "medium"
+    },
+    {
+      "id": "steinmann22",
+      "title": "Machines Explaining Linear Programs",
+      "url": "https://arxiv.org/abs/2206.07194",
+      "year": 2022,
+      "categories": ["interpretability", "LP"],
+      "priority": "medium"
+    },
+    {
+      "id": "israeli02",
+      "title": "Shortest-Path Network Interdiction",
+      "url": "https://apps.dtic.mil/sti/pdfs/ADA490133.pdf",
+      "year": 2002,
+      "categories": ["LP"],
+      "read": true,
+      "priority": "medium"
+    },
+    {
+      "id": "buchbinder14",
+      "title": "Secretary Problems via Linear Programming",
+      "url": "https://www2.isye.gatech.edu/~msingh94/publications/sec-ipco-final.pdf",
+      "year": 2014,
+      "categories": ["online-algorithms", "LP"],
+      "read": true,
+      "priority": "medium"
+    },
+    {
+      "id": "chan-chen-jiang",
+      "title": "Revealing Optimal Thresholds for Generalized Secretary Problem via Continuous LP",
+      "url": "https://i.cs.hku.hk/~hubert/soda15.pdf",
+      "year": 2015,
+      "categories": ["online-algorithms", "LP"],
+      "read": true,
+      "related_to": ["buchbinder14"],
+      "priority": "medium"
+    },
+    {
+      "id": "albers21",
+      "title": "New results for the k-secretary problem",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0304397521001122",
+      "year": 2021,
+      "categories": ["online-algorithms"],
+      "read": true,
+      "related_to": ["buchbinder14", "chan-chen-jiang"],
+      "priority": "low"
+    },
+    {
+      "id": "ferguson89",
+      "title": "Who Solved the Secretary Problem?",
+      "url": "https://www2.math.upenn.edu/~ted/210F10/References/Secretary.pdf",
+      "year": 1989,
+      "categories": ["online-algorithms"],
+      "read": true,
+      "related_to": "albers21",
+      "priority": "low"
+    },
+    {
+      "id": "melo25",
+      "title": "Hiring Under Uncertainty and Competition: A Work on Various Extensions of the Secretary Problem",
+      "url": "https://mail-attachment.googleusercontent.com/attachment/u/1/?ui=2&ik=0a1623c661&attid=0.1&permmsgid=msg-f:1844082833870306905&th=19977f91293c3e59&view=att&disp=inline&realattid=f_mfwxez4t0&zw&sadnir=3&saddbat=ANGjdJ_wUfP5VK3Z_ubLYsitTJS0qPOk13NRrPD6GIEqHW1omFbqfswyRFytoXgiJ-thO_OLCRdsrleFp7XfYa88frnq1aD-d5s4lUZpZnUHXRBJ2QpFG-NJvTm8jE3LLcx4fX4ZAno7o0HF1g_SFOnsBYG0ixHm61c-OQKZWgIyo7_yB75LMpKmHQL7_JGMk0Bz7rHrSrkT3w1vmzh5NZ58bS_2chke0ONAYLfUwxkFqzepr4xioSoW3FeEiCGYNHIM09T3tunh96N0avU6Sext3ay23gKAtiN-FZ2G7Vq3jtWJxJJPrjkjAZuH5wSrq_iphYauB8vmwx_K1ql9PqXhp1k15KFwRr0PmDhv7CLR8589jt4Lqm8V0q-hfC-6vNLQ2K06NeyycF4L0Q1hStU9fB7NCW-gyqQ3YTpJCvHsrMJHVA1A2jts7k-hzBmuug7D0VPU_8p70F9PrvSYjKO2kgYLBRfoGn9ElJ6W8xYpJQtkwZOkZLGVKv7g2Ezvig5n4HKC0edkCHC_dJ-S9u4KS0plYWkgrBnWIfpalUDUtUHeTi_UhM7-dnPMtby_a8UOzVsSHGZftbIdf6chKvBxIxuzP5IAdxflq4P4voRHsrzLd8a3VYA4s7oPcc26hF3MYhL5rlFnVtbbCkaSEthdIknQn-ffdXEdB_9v-xfw4skkGBUg-o3dGhh6Dv5IxiKXFiPKgmwsx6mR4c59Lbye0ds_nkHOqHnSIJqfqCsBaAMv_JuOuq9Mhrcp0a2sbhq5nfYHd4uU-diAF-wHB7Fi1E0U6P9YksjRjQXhK7-exHqfGXjNy4CyX5zDLJ5xPRZQSJDtGtvCdEvLCV-QRJjCem0NOjR2qLS8IQ6nLQiu6CZ-VvFft-7dF7jYX9BcDruDnM9H1zSGBdKcnuB9llLk-GOxSbM5OLn083xUvt02-v3pxluW9wlVz-zy4s0LVYLnYXAvSvM0IW7b4Our_pq_I9GQQmyDLLwXsd4soTACGP3WJqm-oMrn6b888H-d-b_R7UsgzC1ybq-QmGXCZ8IRnWQRz5Tywg87jS1AWf9WsX5oBFCGUdzYKSOeRgE",
+      "year": 2017,
+      "categories": ["online-algorithms"],
+      "related_to": ["chan-chen-jiang"],
+      "priority": "low"
+    },
+    {
+      "id": "correa18",
+      "title": "Prophet Inequalities for I.I.D. Random Variables From an Unknown Distribution",
+      "url": "https://webspace.maths.qmul.ac.uk/felix.fischer/publications/cdfs_prophet.pdf",
+      "year": 2018, 
+      "categories": ["online-algorithms"],
+      "priority": "low"
+    },
+    {
+      "id": "salazar25",
+      "title": "The I.I.D. Prophet Inequality with Limited Flexibility",
+      "url": "https://pubsonline.informs.org/doi/epdf/10.1287/moor.2022.0345",
+      "year": 2025,
+      "categories": ["online-algorithms", "LP"],
+      "priority": "low"
+    },
+    {
+      "id": "salazar24",
+      "title": "Robust Online Selection with Uncertain Offer Acceptance",
+      "url": "https://pubsonline.informs.org/doi/epdf/10.1287/moor.2023.0210",
+      "year": 2024,
+      "categories": ["online-algorithms", "LP"],
+      "priority": "low",
+      "related_to": ["salazar25"]
+    },
+    {
+      "id": "brustle24",
+      "title": "Splitting Guarantees for Prophet Inequalities via Nonlinear Systems",
+      "url": "https://arxiv.org/abs/2406.17767",
+      "year": 2024,
+      "categories": ["online-algorithms", "LP"],
+      "priority": "low",
+      "read": true,
+      "related_to": ["salazar24", "salazar25", "correa18"]
+    },
+    {
+      "id": "vitercik25",
+      "title": "Algorithms with Calibrated Machine Learning Predictions",
+      "url": "https://arxiv.org/pdf/2502.02861",
+      "year": 2025,
+      "categories": ["data-driven-optimization", "online-algorithms"],
+      "priority": "high"
+    },
+    {
+      "id": "lawless25",
+      "title": "LLMs for Cold-Start Cutting Plane Separator Configuration",
+      "url": "https://link.springer.com/chapter/10.1007/978-3-031-95976-9_4",
+      "year": 2025,
+      "categories": ["LLM", "MIP"],
+      "priority": "medium",
+      "related_to": ["vitercik25"]
+    },
+    {
+      "id": "balcan17",
+      "title": "Dispersion for Data-Driven Algorithm Design, Online Learning, and Private Optimization",
+      "url": "https://arxiv.org/abs/1711.03091",
+      "year": 2017,
+      "categories": ["data-driven-optimization"],
+      "priority": "medium",
+      "related_to": ["vitercik25"]
+    },
+    {
+      "id": "balcan16",
+      "title": "Sample Complexity of Automated Mechanism Design",
+      "url": "https://arxiv.org/abs/1606.04145",
+      "year": 2016,
+      "categories": ["data-driven-optimization"],
+      "priority": "low",
+      "related_to": ["balcan17"]
+    },
+    {
+      "id": "balcan24",
+      "title": "Learning to Branch: Generalization Guarantees and Limits of Data-Independent Discretization",
+      "url": "https://dl.acm.org/doi/10.1145/3637840",
+      "year": 2024,
+      "categories": ["data-driven-optimization", "MIP"],
+      "priority": "low", 
+      "related_to": ["balcan16", "balcan17"]
+    },
+    {
+      "id": "he25",
+      "title": "Primal-Dual Neural Algorithmic Reasoning",
+      "url": "https://arxiv.org/abs/2505.24067",
+      "year": 2025,
+      "categories": ["neural-networks", "LP"],
+      "priority": "high",
+      "related_to": ["vitercik25"]
+    }
+  ]
+}

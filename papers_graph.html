@@ -1,0 +1,489 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Research Papers Graph</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .header {
+            margin-bottom: 15px;
+        }
+        h1 {
+            margin: 0 0 15px 0;
+            font-size: 28px;
+        }
+        .controls {
+            margin-bottom: 15px;
+            display: none;  /* Hide legends - info shown in detail panel */
+        }
+        .main-container {
+            display: flex;
+            gap: 20px;
+            height: calc(100vh - 140px);
+        }
+        .priority-legend {
+            padding: 12px 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            display: inline-block;
+        }
+        .priority-legend strong {
+            margin-right: 15px;
+        }
+        .priority-item {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .priority-dot {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        .priority-dot.high {
+            width: 20px;
+            height: 20px;
+            background: #2563eb;
+        }
+        .priority-dot.medium {
+            width: 16px;
+            height: 16px;
+            background: #60a5fa;
+        }
+        .priority-dot.low {
+            width: 12px;
+            height: 12px;
+            background: #bfdbfe;
+        }
+        #mynetwork {
+            flex: 1;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            width: 100%;
+        }
+        #info {
+            width: 400px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        .paper-link {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .paper-link:hover {
+            text-decoration: underline;
+        }
+        .priority-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+        .priority-high { background: #ff6b6b; color: white; }
+        .priority-medium { background: #ffd93d; color: #333; }
+        .priority-low { background: #e0e0e0; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Reading List</h1>
+
+        <div class="controls">
+            <div class="priority-legend">
+                <strong>Priority:</strong>
+                <span class="priority-item"><span class="priority-dot high"></span>High</span>
+                <span class="priority-item"><span class="priority-dot medium"></span>Medium</span>
+                <span class="priority-item"><span class="priority-dot low"></span>Low</span>
+            </div>
+            <div class="priority-legend" style="margin-left: 10px;">
+                <strong>Status:</strong>
+                <span class="priority-item">━━━ Read</span>
+                <span class="priority-item" style="border: 2px; padding: 2px 8px; border-radius: 3px;">┈┈┈ Unread</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div id="mynetwork"></div>
+        <div id="info">
+            <p style="font-size: 16px; color: #666;">Click on a node to see paper details. Double-click to open the paper URL.</p>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // Create nodes and edges
+        var nodes = new vis.DataSet([{"id": "biology-of-LLM", "label": "", "title": "On the Biology of a Large Language Model", "url": "https://transformer-circuits.pub/2025/attribution-graphs/biology.html", "categories": ["interpretability", "LLM"], "primary_category": "interpretability", "notes": "", "year": 2025, "priority": "high", "read": false}, {"id": "SMC", "label": "", "title": "SMC: Satisfiability Modulo Convex Optimization", "url": "https://dl.acm.org/doi/abs/10.1145/3049797.3049819", "categories": ["logic"], "primary_category": "logic", "notes": "", "year": 2017, "priority": "low", "read": false}, {"id": "SyReNN", "label": "", "title": "SyReNN: A tool for analyzing deep neural networks", "url": "https://thakur.cs.ucdavis.edu/assets/pubs/STTT2023.pdf", "categories": ["neural-networks", "interpretability"], "primary_category": "neural-networks", "notes": "", "year": 2021, "priority": "low", "read": false}, {"id": "DPLL", "label": "", "title": "A Fast Linear-Arithmetic Solver for DPLL(T)", "url": "https://yices.csl.sri.com/papers/cav06.pdf", "categories": ["logic"], "primary_category": "logic", "notes": "", "year": 2006, "priority": "low", "read": false}, {"id": "contextual-optimization", "label": "", "title": "A survey of contextual optimization methods for decision-making under uncertainty", "url": "https://www.sciencedirect.com/science/article/pii/S0377221724002200", "categories": ["data-driven-optimization"], "primary_category": "data-driven-optimization", "notes": "", "year": 2025, "priority": "medium", "read": false}, {"id": "llm-for-math", "label": "", "title": "Large Language Models for Mathematicians", "url": "https://arxiv.org/html/2312.04556v1/#S3", "categories": ["LLM"], "primary_category": "LLM", "notes": "Also includes a nice overview of Transformer architecture", "year": 2023, "priority": "medium", "read": false}, {"id": "minerva", "label": "", "title": "Minerva: Solving Quantitative Reasoning Problems with Language Models", "url": "https://research.google/blog/minerva-solving-quantitative-reasoning-problems-with-language-models/", "categories": ["LLM"], "primary_category": "LLM", "notes": "", "year": 2022, "priority": "low", "read": false}, {"id": "bayesian-lp", "label": "", "title": "Controlled Discovery and Localization of Signals via Bayesian Linear Programming", "url": "https://lucasjanson.fas.harvard.edu/papers/Controlled_Discovery_And_Localization_Of_Signals_Via_Bayesian_Linear_Programming-Spector_Janson-2022.pdf", "categories": ["stats"], "primary_category": "stats", "notes": "Interested in formulation of Bayesian Linear Programming (BLiP)", "year": 2022, "priority": "medium", "read": false}, {"id": "jiang-ma-zhang", "label": "", "title": "Tightness without Counterexamples: A New Approach and New Results for Prophet Inequalities", "url": "https://jiashuo3.github.io/docs/Tightness.pdf", "categories": ["online-algorithms", "LP"], "primary_category": "online-algorithms", "notes": "", "year": 2025, "priority": "medium", "read": false}, {"id": "", "label": "", "title": "Online Convex Programming and Generalized Infinitesimal Gradient Ascent", "url": "https://cdn.aaai.org/ICML/2003/ICML03-120.pdf", "categories": ["online-algorithms"], "primary_category": "online-algorithms", "notes": "Iterative programming (the objective changes @ each step)", "year": 2003, "priority": "low", "read": false}, {"id": "scifi-paper-writing", "label": "", "title": "Scientific Paper Writing", "url": "https://github.com/acmi-lab/cmu-10717-the-art-of-the-paper/tree/main/resources", "categories": ["misc"], "primary_category": "misc", "notes": "A course by Zachary Lipton", "year": 2023, "priority": "high", "read": false}, {"id": "cauchy-schwartz-masterclass", "label": "", "title": "An Introduction to the Art of Mathematical Inequalities", "url": "https://www.isinj.com/mt-usamo/An%20Introduction%20To%20The%20Art%20of%20Mathematical%20Inequalities%20-%20Steele,%20J.%20Michael%20%20(2004,%20MAA).pdf", "categories": ["misc"], "primary_category": "misc", "notes": "", "year": 2004, "priority": "high", "read": false}, {"id": "quantum-intro", "label": "", "title": "An Introduction to Quantum Computing, Without the Physics", "url": "https://arxiv.org/pdf/1708.03684", "categories": ["misc"], "primary_category": "misc", "notes": "", "year": 2020, "priority": "medium", "read": false}, {"id": "lin-thesis", "label": "", "title": "Structure-Driven Algorithm Design in Optimization and Machine Learning", "url": "https://www2.eecs.berkeley.edu/Pubs/TechRpts/2023/EECS-2023-71.pdf", "categories": ["data-driven-optimization"], "primary_category": "data-driven-optimization", "notes": "", "year": 2023, "priority": "medium", "read": false}, {"id": "sd-gupta-thesis", "label": "", "title": "Advances in Computer-Assisted Design and Analysis of First-Order Optimization Methods and Related Problems", "url": "https://dspace.mit.edu/bitstream/handle/1721.1/155495/DasGupta-sdgupta-phd-orc-2024-thesis.pdf?sequence=1&isAllowed=y", "categories": ["data-driven-optimization"], "primary_category": "data-driven-optimization", "notes": "", "year": 2024, "priority": "low", "read": false}, {"id": "liu-xu-23", "label": "", "title": "Interpretable neural networks: principles and applications", "url": "https://www.frontiersin.org/journals/artificial-intelligence/articles/10.3389/frai.2023.974295/full", "categories": ["neural-networks", "interpretability"], "primary_category": "neural-networks", "notes": "", "year": 2023, "priority": "low", "read": false}, {"id": "albarghouthi21", "label": "", "title": "Introduction to Neural Network Verification", "url": "https://verifieddeeplearning.com/", "categories": ["neural-networks", "interpretability"], "primary_category": "neural-networks", "notes": "", "year": 2021, "priority": "medium", "read": true}, {"id": "singh17", "label": "", "title": "Fast polyhedra abstract domain", "url": "https://dl.acm.org/doi/abs/10.1145/3009837.3009885", "categories": ["interpretability"], "primary_category": "interpretability", "notes": "", "year": 2017, "priority": "medium", "read": false}, {"id": "singh19", "label": "", "title": "An abstract domain for certifying neural networks", "url": "https://dl.acm.org/doi/abs/10.1145/3290354", "categories": ["interpretability", "neural-networks"], "primary_category": "interpretability", "notes": "", "year": 2019, "priority": "medium", "read": false}, {"id": "singh21", "label": "", "title": "Scalable Polyhedral Verification of Recurrent Neural Networks", "url": "https://link.springer.com/chapter/10.1007/978-3-030-81685-8_10", "categories": ["neural-networks", "interpretability"], "primary_category": "neural-networks", "notes": "", "year": 2021, "priority": "low", "read": false}, {"id": "elboher20", "label": "", "title": "An Abstraction-Based Framework for Neural Network Verification", "url": "https://link.springer.com/chapter/10.1007/978-3-030-53288-8_3", "categories": ["neural-networks", "interpretability"], "primary_category": "neural-networks", "notes": "", "year": 2020, "priority": "low", "read": false}, {"id": "cousot05", "label": "", "title": "Course: Abstract Interpretation", "url": "https://web.mit.edu/afs/athena.mit.edu/course/16/16.399/www/", "categories": ["interpretability"], "primary_category": "interpretability", "notes": "", "year": 2005, "priority": "medium", "read": false}, {"id": "static-analysis", "label": "", "title": "Abstract Interpretation in a Nutshell", "url": "https://www.di.ens.fr/~cousot/AI/IntroAbsInt.html", "categories": ["interpretability"], "primary_category": "interpretability", "notes": "", "year": "", "priority": "medium", "read": false}, {"id": "owhadi23", "label": "", "title": "Do ideas have shape? Idea registration as the continuous limit of artificial neural networks", "url": "https://authors.library.caltech.edu/records/p1ver-k8122", "categories": ["neural-networks"], "primary_category": "neural-networks", "notes": "", "year": 2023, "priority": "medium", "read": false}, {"id": "horton23", "label": "", "title": "Large Language Models as Simulated Economic Agents: What Can We Learn from Homo Silicus?", "url": "https://www.nber.org/system/files/working_papers/w31122/w31122.pdf", "categories": ["LLM"], "primary_category": "LLM", "notes": "", "year": 2023, "priority": "medium", "read": false}, {"id": "fish25", "label": "", "title": "Algorithmic Collusion by Large Language Models", "url": "https://arxiv.org/pdf/2404.00806", "categories": ["LLM"], "primary_category": "LLM", "notes": "", "year": 2025, "priority": "low", "read": false}, {"id": "simon96", "label": "", "title": "The Sciences of the Artificial", "url": "https://monoskop.org/images/9/9c/Simon_Herbert_A_The_Sciences_of_the_Artificial_3rd_ed.pdf", "categories": ["misc"], "primary_category": "misc", "notes": "", "year": 1996, "priority": "low", "read": false}, {"id": "lipton17", "label": "", "title": "The Mythos of Model Interpretability", "url": "https://arxiv.org/pdf/1606.03490", "categories": ["interpretability"], "primary_category": "interpretability", "notes": "", "year": 2017, "priority": "high", "read": true}, {"id": "huchette25", "label": "", "title": "When Deep Learning Meets Polyhedral Theory: A Survey", "url": "https://arxiv.org/html/2305.00241v4#S2", "categories": ["neural-networks"], "primary_category": "neural-networks", "notes": "", "year": 2025, "priority": "high", "read": false}, {"id": "black22", "label": "", "title": "Interpreting Neural Networks through the Polytope Lens", "url": "https://arxiv.org/pdf/2211.12312", "categories": ["interpretability", "neural-networks"], "primary_category": "interpretability", "notes": "", "year": 2022, "priority": "high", "read": false}, {"id": "primal-dual", "label": "", "title": "The primal-dual method for approximation algorithms and its application to network design problems", "url": "https://math.mit.edu/~goemans/PAPERS/book-ch4.pdf", "categories": ["LP"], "primary_category": "LP", "notes": "", "year": 1996, "priority": "high", "read": false}, {"id": "huang24", "label": "", "title": "Online Primal Dual Meets Online Matching with Stochastic Rewards: Configuration LP to the Rescue", "url": "https://epubs.siam.org/doi/10.1137/21M1454705#:~:text=They%20use%20a%20factor%20revealing,a%20natural%20generalization%20of%20Ranking", "categories": ["LP", "online-algorithms"], "primary_category": "LP", "notes": "", "year": 2024, "priority": "medium", "read": false}, {"id": "buchbinder09", "label": "", "title": "The Design of Competitive Online Algorithms via a Primal-Dual Approach", "url": "https://www.tau.ac.il/~nivb/download/pd-survey.pdf", "categories": ["LP", "online-algorithms"], "primary_category": "LP", "notes": "", "year": 2009, "priority": "high", "read": false}, {"id": "jan03", "label": "", "title": "Greedy Facility Location Algorithms Analyzed Using Dual Fitting with Factor-Revealing LP", "url": "https://www.math.cmu.edu/~jvera/informs/facloc/jacm.pdf", "categories": ["LP"], "primary_category": "LP", "notes": "", "year": 2003, "priority": "low", "read": false}, {"id": "kolter18", "label": "", "title": "Provable Defenses against Adversarial Examples via the Convex Outer Adversarial Polytope", "url": "https://arxiv.org/pdf/1711.00851", "categories": ["neural-networks"], "primary_category": "neural-networks", "notes": "", "year": 2018, "priority": "low", "read": false}, {"id": "bertsimas18", "label": "", "title": "The Voice of Optimization", "url": "https://arxiv.org/abs/1812.09991", "categories": ["interpretability", "MIP"], "primary_category": "interpretability", "notes": "", "year": 2018, "priority": "medium", "read": false}, {"id": "steinmann22", "label": "", "title": "Machines Explaining Linear Programs", "url": "https://arxiv.org/abs/2206.07194", "categories": ["interpretability", "LP"], "primary_category": "interpretability", "notes": "", "year": 2022, "priority": "medium", "read": false}, {"id": "israeli02", "label": "", "title": "Shortest-Path Network Interdiction", "url": "https://apps.dtic.mil/sti/pdfs/ADA490133.pdf", "categories": ["LP"], "primary_category": "LP", "notes": "", "year": 2002, "priority": "medium", "read": true}, {"id": "buchbinder14", "label": "", "title": "Secretary Problems via Linear Programming", "url": "https://www2.isye.gatech.edu/~msingh94/publications/sec-ipco-final.pdf", "categories": ["online-algorithms", "LP"], "primary_category": "online-algorithms", "notes": "", "year": 2014, "priority": "medium", "read": true}, {"id": "chan-chen-jiang", "label": "", "title": "Revealing Optimal Thresholds for Generalized Secretary Problem via Continuous LP", "url": "https://i.cs.hku.hk/~hubert/soda15.pdf", "categories": ["online-algorithms", "LP"], "primary_category": "online-algorithms", "notes": "", "year": 2015, "priority": "medium", "read": true}, {"id": "albers21", "label": "", "title": "New results for the k-secretary problem", "url": "https://www.sciencedirect.com/science/article/pii/S0304397521001122", "categories": ["online-algorithms"], "primary_category": "online-algorithms", "notes": "", "year": 2021, "priority": "low", "read": true}, {"id": "ferguson89", "label": "", "title": "Who Solved the Secretary Problem?", "url": "https://www2.math.upenn.edu/~ted/210F10/References/Secretary.pdf", "categories": ["online-algorithms"], "primary_category": "online-algorithms", "notes": "", "year": 1989, "priority": "low", "read": true}, {"id": "melo25", "label": "", "title": "Hiring Under Uncertainty and Competition: A Work on Various Extensions of the Secretary Problem", "url": "https://mail-attachment.googleusercontent.com/attachment/u/1/?ui=2&ik=0a1623c661&attid=0.1&permmsgid=msg-f:1844082833870306905&th=19977f91293c3e59&view=att&disp=inline&realattid=f_mfwxez4t0&zw&sadnir=3&saddbat=ANGjdJ_wUfP5VK3Z_ubLYsitTJS0qPOk13NRrPD6GIEqHW1omFbqfswyRFytoXgiJ-thO_OLCRdsrleFp7XfYa88frnq1aD-d5s4lUZpZnUHXRBJ2QpFG-NJvTm8jE3LLcx4fX4ZAno7o0HF1g_SFOnsBYG0ixHm61c-OQKZWgIyo7_yB75LMpKmHQL7_JGMk0Bz7rHrSrkT3w1vmzh5NZ58bS_2chke0ONAYLfUwxkFqzepr4xioSoW3FeEiCGYNHIM09T3tunh96N0avU6Sext3ay23gKAtiN-FZ2G7Vq3jtWJxJJPrjkjAZuH5wSrq_iphYauB8vmwx_K1ql9PqXhp1k15KFwRr0PmDhv7CLR8589jt4Lqm8V0q-hfC-6vNLQ2K06NeyycF4L0Q1hStU9fB7NCW-gyqQ3YTpJCvHsrMJHVA1A2jts7k-hzBmuug7D0VPU_8p70F9PrvSYjKO2kgYLBRfoGn9ElJ6W8xYpJQtkwZOkZLGVKv7g2Ezvig5n4HKC0edkCHC_dJ-S9u4KS0plYWkgrBnWIfpalUDUtUHeTi_UhM7-dnPMtby_a8UOzVsSHGZftbIdf6chKvBxIxuzP5IAdxflq4P4voRHsrzLd8a3VYA4s7oPcc26hF3MYhL5rlFnVtbbCkaSEthdIknQn-ffdXEdB_9v-xfw4skkGBUg-o3dGhh6Dv5IxiKXFiPKgmwsx6mR4c59Lbye0ds_nkHOqHnSIJqfqCsBaAMv_JuOuq9Mhrcp0a2sbhq5nfYHd4uU-diAF-wHB7Fi1E0U6P9YksjRjQXhK7-exHqfGXjNy4CyX5zDLJ5xPRZQSJDtGtvCdEvLCV-QRJjCem0NOjR2qLS8IQ6nLQiu6CZ-VvFft-7dF7jYX9BcDruDnM9H1zSGBdKcnuB9llLk-GOxSbM5OLn083xUvt02-v3pxluW9wlVz-zy4s0LVYLnYXAvSvM0IW7b4Our_pq_I9GQQmyDLLwXsd4soTACGP3WJqm-oMrn6b888H-d-b_R7UsgzC1ybq-QmGXCZ8IRnWQRz5Tywg87jS1AWf9WsX5oBFCGUdzYKSOeRgE", "categories": ["online-algorithms"], "primary_category": "online-algorithms", "notes": "", "year": 2017, "priority": "low", "read": false}, {"id": "correa18", "label": "", "title": "Prophet Inequalities for I.I.D. Random Variables From an Unknown Distribution", "url": "https://webspace.maths.qmul.ac.uk/felix.fischer/publications/cdfs_prophet.pdf", "categories": ["online-algorithms"], "primary_category": "online-algorithms", "notes": "", "year": 2018, "priority": "low", "read": false}, {"id": "salazar25", "label": "", "title": "The I.I.D. Prophet Inequality with Limited Flexibility", "url": "https://pubsonline.informs.org/doi/epdf/10.1287/moor.2022.0345", "categories": ["online-algorithms", "LP"], "primary_category": "online-algorithms", "notes": "", "year": 2025, "priority": "low", "read": false}, {"id": "salazar24", "label": "", "title": "Robust Online Selection with Uncertain Offer Acceptance", "url": "https://pubsonline.informs.org/doi/epdf/10.1287/moor.2023.0210", "categories": ["online-algorithms", "LP"], "primary_category": "online-algorithms", "notes": "", "year": 2024, "priority": "low", "read": false}, {"id": "brustle24", "label": "", "title": "Splitting Guarantees for Prophet Inequalities via Nonlinear Systems", "url": "https://arxiv.org/abs/2406.17767", "categories": ["online-algorithms", "LP"], "primary_category": "online-algorithms", "notes": "", "year": 2024, "priority": "low", "read": true}, {"id": "vitercik25", "label": "", "title": "Algorithms with Calibrated Machine Learning Predictions", "url": "https://arxiv.org/pdf/2502.02861", "categories": ["data-driven-optimization", "online-algorithms"], "primary_category": "data-driven-optimization", "notes": "", "year": 2025, "priority": "high", "read": false}, {"id": "lawless25", "label": "", "title": "LLMs for Cold-Start Cutting Plane Separator Configuration", "url": "https://link.springer.com/chapter/10.1007/978-3-031-95976-9_4", "categories": ["LLM", "MIP"], "primary_category": "LLM", "notes": "", "year": 2025, "priority": "medium", "read": false}, {"id": "balcan17", "label": "", "title": "Dispersion for Data-Driven Algorithm Design, Online Learning, and Private Optimization", "url": "https://arxiv.org/abs/1711.03091", "categories": ["data-driven-optimization"], "primary_category": "data-driven-optimization", "notes": "", "year": 2017, "priority": "medium", "read": false}, {"id": "balcan16", "label": "", "title": "Sample Complexity of Automated Mechanism Design", "url": "https://arxiv.org/abs/1606.04145", "categories": ["data-driven-optimization"], "primary_category": "data-driven-optimization", "notes": "", "year": 2016, "priority": "low", "read": false}, {"id": "balcan24", "label": "", "title": "Learning to Branch: Generalization Guarantees and Limits of Data-Independent Discretization", "url": "https://dl.acm.org/doi/10.1145/3637840", "categories": ["data-driven-optimization", "MIP"], "primary_category": "data-driven-optimization", "notes": "", "year": 2024, "priority": "low", "read": false}, {"id": "he25", "label": "", "title": "Primal-Dual Neural Algorithmic Reasoning", "url": "https://arxiv.org/abs/2505.24067", "categories": ["neural-networks", "LP"], "primary_category": "neural-networks", "notes": "", "year": 2025, "priority": "high", "read": false}]);
+        var edges = new vis.DataSet([{"from": "llm-for-math", "to": "minerva"}, {"from": "singh17", "to": "albarghouthi21"}, {"from": "singh19", "to": "albarghouthi21"}, {"from": "singh19", "to": "singh17"}, {"from": "singh21", "to": "singh19"}, {"from": "elboher20", "to": "singh21"}, {"from": "cousot05", "to": "static-analysis"}, {"from": "static-analysis", "to": "singh17"}, {"from": "simon96", "to": "fish25"}, {"from": "black22", "to": "huchette25"}, {"from": "buchbinder09", "to": "p"}, {"from": "buchbinder09", "to": "r"}, {"from": "buchbinder09", "to": "i"}, {"from": "buchbinder09", "to": "m"}, {"from": "buchbinder09", "to": "a"}, {"from": "buchbinder09", "to": "l"}, {"from": "buchbinder09", "to": "-"}, {"from": "buchbinder09", "to": "d"}, {"from": "buchbinder09", "to": "u"}, {"from": "chan-chen-jiang", "to": "buchbinder14"}, {"from": "albers21", "to": "buchbinder14"}, {"from": "albers21", "to": "chan-chen-jiang"}, {"from": "ferguson89", "to": "a"}, {"from": "ferguson89", "to": "l"}, {"from": "ferguson89", "to": "b"}, {"from": "ferguson89", "to": "e"}, {"from": "ferguson89", "to": "r"}, {"from": "ferguson89", "to": "s"}, {"from": "ferguson89", "to": "2"}, {"from": "ferguson89", "to": "1"}, {"from": "melo25", "to": "chan-chen-jiang"}, {"from": "salazar24", "to": "salazar25"}, {"from": "brustle24", "to": "salazar24"}, {"from": "brustle24", "to": "salazar25"}, {"from": "brustle24", "to": "correa18"}, {"from": "lawless25", "to": "vitercik25"}, {"from": "balcan17", "to": "vitercik25"}, {"from": "balcan16", "to": "balcan17"}, {"from": "balcan24", "to": "balcan16"}, {"from": "balcan24", "to": "balcan17"}, {"from": "he25", "to": "vitercik25"}, {"from": "biology-of-LLM", "to": "SyReNN", "hidden": true, "physics": true, "length": 30}, {"from": "biology-of-LLM", "to": "liu-xu-23", "hidden": true, "physics": true, "length": 30}, {"from": "SyReNN", "to": "liu-xu-23", "hidden": true, "physics": true, "length": 30}, {"from": "SyReNN", "to": "albarghouthi21", "hidden": true, "physics": true, "length": 30}, {"from": "liu-xu-23", "to": "albarghouthi21", "hidden": true, "physics": true, "length": 30}, {"from": "liu-xu-23", "to": "singh17", "hidden": true, "physics": true, "length": 30}, {"from": "albarghouthi21", "to": "singh17", "hidden": true, "physics": true, "length": 30}, {"from": "albarghouthi21", "to": "singh19", "hidden": true, "physics": true, "length": 30}, {"from": "singh17", "to": "singh19", "hidden": true, "physics": true, "length": 30}, {"from": "singh17", "to": "singh21", "hidden": true, "physics": true, "length": 30}, {"from": "singh19", "to": "singh21", "hidden": true, "physics": true, "length": 30}, {"from": "singh19", "to": "elboher20", "hidden": true, "physics": true, "length": 30}, {"from": "singh21", "to": "elboher20", "hidden": true, "physics": true, "length": 30}, {"from": "singh21", "to": "cousot05", "hidden": true, "physics": true, "length": 30}, {"from": "elboher20", "to": "cousot05", "hidden": true, "physics": true, "length": 30}, {"from": "elboher20", "to": "static-analysis", "hidden": true, "physics": true, "length": 30}, {"from": "cousot05", "to": "static-analysis", "hidden": true, "physics": true, "length": 30}, {"from": "cousot05", "to": "lipton17", "hidden": true, "physics": true, "length": 30}, {"from": "static-analysis", "to": "lipton17", "hidden": true, "physics": true, "length": 30}, {"from": "static-analysis", "to": "black22", "hidden": true, "physics": true, "length": 30}, {"from": "lipton17", "to": "black22", "hidden": true, "physics": true, "length": 30}, {"from": "lipton17", "to": "bertsimas18", "hidden": true, "physics": true, "length": 30}, {"from": "black22", "to": "bertsimas18", "hidden": true, "physics": true, "length": 30}, {"from": "black22", "to": "steinmann22", "hidden": true, "physics": true, "length": 30}, {"from": "bertsimas18", "to": "steinmann22", "hidden": true, "physics": true, "length": 30}, {"from": "biology-of-LLM", "to": "llm-for-math", "hidden": true, "physics": true, "length": 30}, {"from": "biology-of-LLM", "to": "minerva", "hidden": true, "physics": true, "length": 30}, {"from": "llm-for-math", "to": "minerva", "hidden": true, "physics": true, "length": 30}, {"from": "llm-for-math", "to": "horton23", "hidden": true, "physics": true, "length": 30}, {"from": "minerva", "to": "horton23", "hidden": true, "physics": true, "length": 30}, {"from": "minerva", "to": "fish25", "hidden": true, "physics": true, "length": 30}, {"from": "horton23", "to": "fish25", "hidden": true, "physics": true, "length": 30}, {"from": "horton23", "to": "lawless25", "hidden": true, "physics": true, "length": 30}, {"from": "fish25", "to": "lawless25", "hidden": true, "physics": true, "length": 30}, {"from": "SMC", "to": "DPLL", "hidden": true, "physics": true, "length": 30}, {"from": "SyReNN", "to": "liu-xu-23", "hidden": true, "physics": true, "length": 30}, {"from": "SyReNN", "to": "albarghouthi21", "hidden": true, "physics": true, "length": 30}, {"from": "liu-xu-23", "to": "albarghouthi21", "hidden": true, "physics": true, "length": 30}, {"from": "liu-xu-23", "to": "singh19", "hidden": true, "physics": true, "length": 30}, {"from": "albarghouthi21", "to": "singh19", "hidden": true, "physics": true, "length": 30}, {"from": "albarghouthi21", "to": "singh21", "hidden": true, "physics": true, "length": 30}, {"from": "singh19", "to": "singh21", "hidden": true, "physics": true, "length": 30}, {"from": "singh19", "to": "elboher20", "hidden": true, "physics": true, "length": 30}, {"from": "singh21", "to": "elboher20", "hidden": true, "physics": true, "length": 30}, {"from": "singh21", "to": "owhadi23", "hidden": true, "physics": true, "length": 30}, {"from": "elboher20", "to": "owhadi23", "hidden": true, "physics": true, "length": 30}, {"from": "elboher20", "to": "huchette25", "hidden": true, "physics": true, "length": 30}, {"from": "owhadi23", "to": "huchette25", "hidden": true, "physics": true, "length": 30}, {"from": "owhadi23", "to": "black22", "hidden": true, "physics": true, "length": 30}, {"from": "huchette25", "to": "black22", "hidden": true, "physics": true, "length": 30}, {"from": "huchette25", "to": "kolter18", "hidden": true, "physics": true, "length": 30}, {"from": "black22", "to": "kolter18", "hidden": true, "physics": true, "length": 30}, {"from": "black22", "to": "he25", "hidden": true, "physics": true, "length": 30}, {"from": "kolter18", "to": "he25", "hidden": true, "physics": true, "length": 30}, {"from": "contextual-optimization", "to": "lin-thesis", "hidden": true, "physics": true, "length": 30}, {"from": "contextual-optimization", "to": "sd-gupta-thesis", "hidden": true, "physics": true, "length": 30}, {"from": "lin-thesis", "to": "sd-gupta-thesis", "hidden": true, "physics": true, "length": 30}, {"from": "lin-thesis", "to": "vitercik25", "hidden": true, "physics": true, "length": 30}, {"from": "sd-gupta-thesis", "to": "vitercik25", "hidden": true, "physics": true, "length": 30}, {"from": "sd-gupta-thesis", "to": "balcan17", "hidden": true, "physics": true, "length": 30}, {"from": "vitercik25", "to": "balcan17", "hidden": true, "physics": true, "length": 30}, {"from": "vitercik25", "to": "balcan16", "hidden": true, "physics": true, "length": 30}, {"from": "balcan17", "to": "balcan16", "hidden": true, "physics": true, "length": 30}, {"from": "balcan17", "to": "balcan24", "hidden": true, "physics": true, "length": 30}, {"from": "balcan16", "to": "balcan24", "hidden": true, "physics": true, "length": 30}, {"from": "jiang-ma-zhang", "to": "", "hidden": true, "physics": true, "length": 30}, {"from": "jiang-ma-zhang", "to": "huang24", "hidden": true, "physics": true, "length": 30}, {"from": "", "to": "huang24", "hidden": true, "physics": true, "length": 30}, {"from": "", "to": "buchbinder09", "hidden": true, "physics": true, "length": 30}, {"from": "huang24", "to": "buchbinder09", "hidden": true, "physics": true, "length": 30}, {"from": "huang24", "to": "buchbinder14", "hidden": true, "physics": true, "length": 30}, {"from": "buchbinder09", "to": "buchbinder14", "hidden": true, "physics": true, "length": 30}, {"from": "buchbinder09", "to": "chan-chen-jiang", "hidden": true, "physics": true, "length": 30}, {"from": "buchbinder14", "to": "chan-chen-jiang", "hidden": true, "physics": true, "length": 30}, {"from": "buchbinder14", "to": "albers21", "hidden": true, "physics": true, "length": 30}, {"from": "chan-chen-jiang", "to": "albers21", "hidden": true, "physics": true, "length": 30}, {"from": "chan-chen-jiang", "to": "ferguson89", "hidden": true, "physics": true, "length": 30}, {"from": "albers21", "to": "ferguson89", "hidden": true, "physics": true, "length": 30}, {"from": "albers21", "to": "melo25", "hidden": true, "physics": true, "length": 30}, {"from": "ferguson89", "to": "melo25", "hidden": true, "physics": true, "length": 30}, {"from": "ferguson89", "to": "correa18", "hidden": true, "physics": true, "length": 30}, {"from": "melo25", "to": "correa18", "hidden": true, "physics": true, "length": 30}, {"from": "melo25", "to": "salazar25", "hidden": true, "physics": true, "length": 30}, {"from": "correa18", "to": "salazar25", "hidden": true, "physics": true, "length": 30}, {"from": "correa18", "to": "salazar24", "hidden": true, "physics": true, "length": 30}, {"from": "salazar25", "to": "salazar24", "hidden": true, "physics": true, "length": 30}, {"from": "salazar25", "to": "brustle24", "hidden": true, "physics": true, "length": 30}, {"from": "salazar24", "to": "brustle24", "hidden": true, "physics": true, "length": 30}, {"from": "salazar24", "to": "vitercik25", "hidden": true, "physics": true, "length": 30}, {"from": "brustle24", "to": "vitercik25", "hidden": true, "physics": true, "length": 30}, {"from": "jiang-ma-zhang", "to": "primal-dual", "hidden": true, "physics": true, "length": 30}, {"from": "jiang-ma-zhang", "to": "huang24", "hidden": true, "physics": true, "length": 30}, {"from": "primal-dual", "to": "huang24", "hidden": true, "physics": true, "length": 30}, {"from": "primal-dual", "to": "buchbinder09", "hidden": true, "physics": true, "length": 30}, {"from": "huang24", "to": "buchbinder09", "hidden": true, "physics": true, "length": 30}, {"from": "huang24", "to": "jan03", "hidden": true, "physics": true, "length": 30}, {"from": "buchbinder09", "to": "jan03", "hidden": true, "physics": true, "length": 30}, {"from": "buchbinder09", "to": "steinmann22", "hidden": true, "physics": true, "length": 30}, {"from": "jan03", "to": "steinmann22", "hidden": true, "physics": true, "length": 30}, {"from": "jan03", "to": "israeli02", "hidden": true, "physics": true, "length": 30}, {"from": "steinmann22", "to": "israeli02", "hidden": true, "physics": true, "length": 30}, {"from": "steinmann22", "to": "buchbinder14", "hidden": true, "physics": true, "length": 30}, {"from": "israeli02", "to": "buchbinder14", "hidden": true, "physics": true, "length": 30}, {"from": "israeli02", "to": "chan-chen-jiang", "hidden": true, "physics": true, "length": 30}, {"from": "buchbinder14", "to": "chan-chen-jiang", "hidden": true, "physics": true, "length": 30}, {"from": "buchbinder14", "to": "salazar25", "hidden": true, "physics": true, "length": 30}, {"from": "chan-chen-jiang", "to": "salazar25", "hidden": true, "physics": true, "length": 30}, {"from": "chan-chen-jiang", "to": "salazar24", "hidden": true, "physics": true, "length": 30}, {"from": "salazar25", "to": "salazar24", "hidden": true, "physics": true, "length": 30}, {"from": "salazar25", "to": "brustle24", "hidden": true, "physics": true, "length": 30}, {"from": "salazar24", "to": "brustle24", "hidden": true, "physics": true, "length": 30}, {"from": "salazar24", "to": "he25", "hidden": true, "physics": true, "length": 30}, {"from": "brustle24", "to": "he25", "hidden": true, "physics": true, "length": 30}, {"from": "scifi-paper-writing", "to": "cauchy-schwartz-masterclass", "hidden": true, "physics": true, "length": 30}, {"from": "scifi-paper-writing", "to": "quantum-intro", "hidden": true, "physics": true, "length": 30}, {"from": "cauchy-schwartz-masterclass", "to": "quantum-intro", "hidden": true, "physics": true, "length": 30}, {"from": "cauchy-schwartz-masterclass", "to": "simon96", "hidden": true, "physics": true, "length": 30}, {"from": "quantum-intro", "to": "simon96", "hidden": true, "physics": true, "length": 30}, {"from": "bertsimas18", "to": "lawless25", "hidden": true, "physics": true, "length": 30}, {"from": "bertsimas18", "to": "balcan24", "hidden": true, "physics": true, "length": 30}, {"from": "lawless25", "to": "balcan24", "hidden": true, "physics": true, "length": 30}]);
+
+        // Create network
+        var container = document.getElementById('mynetwork');
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            autoResize: true,
+            nodes: {
+                shape: 'dot',
+                size: 8,
+                borderWidth: 0,
+                borderWidthSelected: 2,
+                color: {
+                    border: '#333',
+                    background: '#999',
+                    highlight: {
+                        border: '#0066cc',
+                        background: '#0066cc'
+                    }
+                },
+                font: {
+                    size: 0
+                }
+            },
+            edges: {
+                width: 1,
+                color: {color: 'rgba(150, 150, 150, 0.3)', highlight: 'rgba(0, 102, 204, 0.6)'},
+                smooth: {
+                    type: 'continuous',
+                    forceDirection: 'none',
+                    roundness: 0.5
+                },
+                arrows: {
+                    to: {enabled: false}
+                },
+                hidden: false
+            },
+            physics: {
+            
+                enabled: true,
+                forceAtlas2Based: {
+                    gravitationalConstant: -50,
+                    centralGravity: 0.005,
+                    springLength: 100,
+                    springConstant: 0.08,
+                    damping: 0.9,
+                    avoidOverlap: 0.5
+                },
+                maxVelocity: 50,
+                minVelocity: 0.1,
+                solver: 'forceAtlas2Based',
+                stabilization: {
+                    enabled: true,
+                    iterations: 3000,
+                    updateInterval: 25,
+                    fit: true
+                }
+            },
+            interaction: {
+                hover: true,
+                tooltipDelay: 300,
+                hideEdgesOnDrag: true,
+                hideEdgesOnZoom: false,
+                zoomView: true,
+                dragView: true,
+                hoverConnectedEdges: false
+            }
+        };
+        
+        var network = new vis.Network(container, data, options);
+
+        setTimeout(() => {
+            network.setOptions({ physics: { enabled: false } });
+            nodes.get().forEach(n => {
+                nodes.update({ id: n.id, fixed: { x: true, y: true } });
+            });
+        }, 2000);
+        
+        // Style nodes based on category, priority, and status after stabilization
+        network.on('stabilized', function() {
+            // Get positions for category labels
+            var categoryPositions = {};
+            var categoryCounts = {};
+            var categoryBounds = {};
+
+            nodes.forEach(function(node) {
+                if (!node.id.startsWith('category_label_')) {
+                    // Track positions for ALL category labels (not just primary)
+                    var cats = node.categories || [node.primary_category];
+                    var pos = network.getPosition(node.id);
+
+                    cats.forEach(function(cat) {
+                        if (!categoryPositions[cat]) {
+                            categoryPositions[cat] = {x: 0, y: 0};
+                            categoryCounts[cat] = 0;
+                            categoryBounds[cat] = {minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity};
+                        }
+                        categoryPositions[cat].x += pos.x;
+                        categoryPositions[cat].y += pos.y;
+                        categoryCounts[cat]++;
+
+                        // Track bounds for label placement
+                        categoryBounds[cat].minX = Math.min(categoryBounds[cat].minX, pos.x);
+                        categoryBounds[cat].maxX = Math.max(categoryBounds[cat].maxX, pos.x);
+                        categoryBounds[cat].minY = Math.min(categoryBounds[cat].minY, pos.y);
+                        categoryBounds[cat].maxY = Math.max(categoryBounds[cat].maxY, pos.y);
+                    });
+                }
+            });
+
+            // Calculate bounds of entire graph for position-based coloring
+            var allPositions = nodes.get().filter(n => !n.id.startsWith('category_label_')).map(n => network.getPosition(n.id));
+            var minX = Math.min(...allPositions.map(p => p.x));
+            var maxX = Math.max(...allPositions.map(p => p.x));
+            var minY = Math.min(...allPositions.map(p => p.y));
+            var maxY = Math.max(...allPositions.map(p => p.y));
+
+            nodes.forEach(function(node) {
+                if (!node.id.startsWith('category_label_')) {
+                    var pos = network.getPosition(node.id);
+
+                    // Color based on position in graph using HSL
+                    // Map x position to hue (0-360)
+                    var hue = ((pos.x - minX) / (maxX - minX)) * 360;
+                    // Map y position to saturation (40-70% for pastel colors)
+                    var saturation = 50 + ((pos.y - minY) / (maxY - minY)) * 20;
+                    // Fixed lightness for consistent pastel look
+                    var lightness = 65;
+
+                    var bgColor = 'hsla(' + hue + ', ' + saturation + '%, ' + lightness + '%, 0.6)';
+
+                    // Subtle size differences based on priority
+                    var nodeSize = {'high': 12, 'medium': 8, 'low': 6}[node.priority] || 8;
+
+                    // Very subtle border for unread - don't make it too obvious
+                    var borderWidth = node.read ? 0 : 1;
+                    var borderColor = 'rgba(0, 0, 0, 0.3)';
+
+                    nodes.update({
+                        id: node.id,
+                        size: nodeSize,
+                        color: {
+                            background: bgColor,
+                            border: borderColor,
+                            highlight: {
+                                background: bgColor.replace('0.5', '0.8'),
+                                border: '#0066cc'
+                            }
+                        },
+                        borderWidth: borderWidth,
+                        title: node.title  // Show title on hover
+                    });
+                }
+            });
+
+            // Add category labels in the CENTER of each cluster with collision detection
+            var labelPositions = [];
+            var minLabelDistance = 120; // Minimum distance between label centers (increased)
+
+            Object.keys(categoryPositions).forEach(function(cat) {
+                var avgX = categoryPositions[cat].x / categoryCounts[cat];
+                var avgY = categoryPositions[cat].y / categoryCounts[cat];
+
+                // Scale font size based on number of papers in category
+                // Base size 18, up to 28 for large categories
+                var categorySize = categoryCounts[cat];
+                var fontSize = Math.min(28, 18 + Math.sqrt(categorySize) * 2);
+
+                // Check for collisions with existing labels and adjust position
+                var adjusted = false;
+                var attempts = 0;
+                var finalX = avgX;
+                var finalY = avgY;
+
+                while (!adjusted && attempts < 50) {
+                    var hasCollision = false;
+
+                    for (var i = 0; i < labelPositions.length; i++) {
+                        var dx = finalX - labelPositions[i].x;
+                        var dy = finalY - labelPositions[i].y;
+                        var distance = Math.sqrt(dx * dx + dy * dy);
+
+                        // Account for label sizes when checking collision
+                        var minDist = minLabelDistance + (fontSize + labelPositions[i].fontSize) / 4;
+
+                        if (distance < minDist) {
+                            hasCollision = true;
+                            // Push label away from collision at a perpendicular angle
+                            var angle = Math.atan2(dy, dx);
+                            // Add some randomness to avoid getting stuck
+                            var offsetAngle = angle + (attempts > 10 ? (Math.random() - 0.5) * 0.5 : 0);
+                            finalX = labelPositions[i].x + Math.cos(offsetAngle) * minDist * 1.1;
+                            finalY = labelPositions[i].y + Math.sin(offsetAngle) * minDist * 1.1;
+                            break;
+                        }
+                    }
+
+                    if (!hasCollision) {
+                        adjusted = true;
+                    }
+                    attempts++;
+                }
+
+                labelPositions.push({x: finalX, y: finalY, category: cat, fontSize: fontSize});
+
+                var labelId = 'category_label_' + cat;
+                var labelText = cat.toUpperCase();
+
+                try {
+                    nodes.add({
+                        id: labelId,
+                        label: labelText,
+                        x: finalX,
+                        y: finalY,
+                        fixed: {x: true, y: true},
+                        shape: 'text',
+                        font: {
+                            size: fontSize,
+                            color: 'rgba(0, 0, 0, 1)',
+                            face: '-apple-system, BlinkMacSystemFont, sans-serif',
+                            bold: true,
+                            strokeWidth: 0
+                        },
+                        physics: false,
+                        chosen: false,
+                        interaction: false,
+                        mass: 1,
+                        value: undefined
+                    });
+                } catch(e) {
+                    // Label already exists, update position
+                    try {
+                        nodes.update({
+                            id: labelId,
+                            x: finalX,
+                            y: finalY,
+                            interaction: false
+                        });
+                    } catch(e2) {}
+                }
+            });
+        });
+        
+        // Handle node clicks - filter out category labels
+
+        network.on('click', function (params) {
+    if (params.pointer && params.pointer.canvas) {
+        const clickPos = params.pointer.canvas;
+        const clickedNodes = [];
+
+        nodes.get().forEach(n => {
+            const pos = network.getPosition(n.id);
+            if (!pos) return;
+            const dx = pos.x - clickPos.x;
+            const dy = pos.y - clickPos.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            // Adjust 20 if your nodes are larger/smaller
+            if (dist < 20 && !n.id.startsWith('category_label_')) clickedNodes.push(n.id);
+        });
+
+        if (clickedNodes.length > 0) {
+            // Include both real and label nodes
+            clickedNodes.forEach(id => {
+                const node = nodes.get(id);
+                displayPaperInfo(node);
+            });
+        }
+    }
+});
+
+        
+        // Handle double-click to open URL
+  
+
+    network.on('doubleClick', function (params) {
+    if (params.pointer && params.pointer.canvas) {
+        const clickPos = params.pointer.canvas;
+        const clickedNodes = [];
+
+        nodes.get().forEach(n => {
+            const pos = network.getPosition(n.id);
+            if (!pos) return;
+            const dx = pos.x - clickPos.x;
+            const dy = pos.y - clickPos.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            // Adjust 20 if your nodes are larger/smaller
+            if (dist < 20 && !n.id.startsWith('category_label_') && n.url) {
+                window.open(n.url, '_blank');
+                return;
+            }
+        });
+    }
+});
+        
+        function displayPaperInfo(node) {
+            var infoDiv = document.getElementById('info');
+
+            // Display ALL categories - categories is stored as an array
+            var categoriesHtml = '';
+            console.log('Node data:', node);
+            console.log('Categories:', node.categories);
+
+            if (node.categories && node.categories.length > 0) {
+                var cats = node.categories;
+                if (typeof cats === 'string') {
+                    cats = [cats];
+                }
+                categoriesHtml = cats.map(cat =>
+                    '<span style="background: #e0e0e0; padding: 6px 12px; border-radius: 4px; margin-right: 8px; margin-bottom: 6px; display: inline-block; font-size: 15px;">' +
+                    (cat.charAt(0).toUpperCase() + cat.slice(1).replace(/-/g, ' ')) +
+                    '</span>'
+                ).join('');
+            } else {
+                categoriesHtml = '<span style="color: #999;">No categories (debug: ' + JSON.stringify(node.categories) + ')</span>';
+            }
+
+            var priorityClass = 'priority-' + (node.priority || 'medium');
+            var priorityBadge = '<span class="priority-badge ' + priorityClass + '">Priority: ' +
+                (node.priority || 'medium').toUpperCase() + '</span>';
+
+            var readBadge = node.read
+                ? '<span style="background: #10b981; color: white; padding: 4px 10px; border-radius: 4px; font-size: 14px; font-weight: 600; margin-left: 8px;">✓ READ</span>'
+                : '<span style="background: #f59e0b; color: white; padding: 4px 10px; border-radius: 4px; font-size: 14px; font-weight: 600; margin-left: 8px;">UNREAD</span>';
+
+            infoDiv.innerHTML = `
+                <h2 style="margin-top: 0; font-size: 20px; line-height: 1.4;">${escapeHtml(node.title)} ${priorityBadge} ${readBadge}</h2>
+                <p style="font-size: 16px; margin-bottom: 12px;"><strong>Categories:</strong></p>
+                <div style="margin-bottom: 15px;">${categoriesHtml}</div>
+                <p style="font-size: 16px;"><strong>Year:</strong> ${node.year || 'N/A'}</p>
+                ${node.notes ? '<p style="font-size: 16px;"><strong>Notes:</strong> ' + escapeHtml(node.notes) + '</p>' : ''}
+                <p style="font-size: 16px;"><a href="${node.url}" target="_blank" class="paper-link">Open Paper →</a></p>
+            `;
+        }
+        
+        function escapeHtml(text) {
+            var map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+    </script>
+</body>
+</html>
