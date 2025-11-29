@@ -1,0 +1,28 @@
+{
+  "recommendations": [
+    // AI-powered autocomplete (you already have this!)
+    "github.copilot",
+
+    // Essential for markdown + LaTeX math preview
+    "shd101wyy.markdown-preview-enhanced",
+
+    // LaTeX support and snippets
+    "james-yu.latex-workshop",
+
+    // Enhanced markdown editing
+    "yzhang.markdown-all-in-one",
+
+    // Spell checker (useful for long notes)
+    "streetsidesoftware.code-spell-checker",
+
+    // Optional but useful:
+    // Custom snippets for faster LaTeX typing
+    "draivin.hsnips",
+
+    // Paste images directly into markdown
+    "mushan.vscode-paste-image",
+
+    // Better file linking in markdown
+    "foam.foam-vscode"
+  ]
+}

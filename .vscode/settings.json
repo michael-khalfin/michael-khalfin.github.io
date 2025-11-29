@@ -1,0 +1,33 @@
+{
+  // Markdown Preview Enhanced settings
+  "markdown-preview-enhanced.enableExtendedTableSyntax": true,
+  "markdown-preview-enhanced.mathRenderingOption": "KaTeX",
+  "markdown-preview-enhanced.codeBlockTheme": "github.css",
+
+  // LaTeX Workshop settings
+  "latex-workshop.intellisense.package.enabled": true,
+
+  // Markdown settings
+  "markdown.math.enabled": true,
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "on",
+      "strings": "on",
+      "other": "on"
+    }
+  },
+
+  // File associations
+  "files.associations": {
+    "*.md": "markdown"
+  },
+
+  // Spell checker - add technical terms to dictionary as needed
+  "cSpell.words": [
+    "DPLL",
+    "SyReNN",
+    "polytope",
+    "polyhedral"
+  ]
+}
