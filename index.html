@@ -352,6 +352,33 @@
             font-style: italic;
         }
 
+        .mobile-demo-placeholder {
+            display: none;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            min-height: 400px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .mobile-demo-placeholder img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .mobile-demo-placeholder .message {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            max-width: 600px;
+        }
+
         @media (max-width: 768px) {
             .hero {
                 flex-direction: column;
@@ -365,6 +392,16 @@
 
             .travel-grid {
                 grid-template-columns: 1fr;
+            }
+
+            /* Hide interactive demos on mobile */
+            #demo1 iframe,
+            #demo2 iframe {
+                display: none;
+            }
+
+            .mobile-demo-placeholder {
+                display: flex;
             }
         }
     </style>
@@ -441,16 +478,28 @@
         <!-- Demo 1 Page -->
         <div id="demo1" class="page">
             <iframe src="demo1.html" style="width: 100%; height: 100vh; border: none;"></iframe>
+            <div class="mobile-demo-placeholder">
+                <div class="message">
+                    <strong>This interactive demo is designed for desktop viewing.</strong><br><br>
+                    Please visit this page on a computer to interact with the DIAL framework and explore the k-secretary problem visualization.
+                </div>
+            </div>
         </div>
 
         <!-- Demo 2 Page -->
         <div id="demo2" class="page">
             <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem;">
-                This demo was created in collaboration with <a href="https://seniormars.com/" style="color: var(--accent);" target="_blank">Charlie Hernandez</a>
+                This demo was created in collaboration with <a href="https://seniormars.com/" style="color: var(--accent);" target="_blank">Charlie Cruz</a>
                 and Burton Alexander as the final project for my course
                 <a href="https://akyrillidis.github.io/comp414-514" style="color: var(--accent);" target="_blank">COMP414 - Algorithms, Complexity, and Approximation</a>.
             </p>
             <iframe src="demo2/index.html" style="width: 100%; height: 100vh; border: none;"></iframe>
+            <div class="mobile-demo-placeholder">
+                <div class="message">
+                    <strong>This interactive demo is designed for desktop viewing.</strong><br><br>
+                    Please visit this page on a computer to interact with the DIAL framework and explore the neural network interpretability visualization.
+                </div>
+            </div>
 
             <div style="background: var(--bg-secondary); border-radius: 8px; padding: 2rem; margin-top: 2rem;">
                 <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Future Work</h3>
