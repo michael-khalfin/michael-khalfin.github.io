@@ -59,6 +59,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         nav .logo {
@@ -98,6 +99,22 @@
 
         .theme-toggle:hover {
             background-color: var(--bg-secondary);
+        }
+
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            padding: 0.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
         }
 
         .container {
@@ -379,29 +396,101 @@
             max-width: 600px;
         }
 
+        @media (min-width: 769px) {
+            /* Desktop navigation - always show menu */
+            .nav-menu {
+                display: flex !important;
+            }
+
+            nav .container > div:first-child {
+                width: auto;
+            }
+        }
+
         @media (max-width: 768px) {
             .hero {
                 flex-direction: column;
                 text-align: center;
             }
 
-            nav ul {
-                gap: 1rem;
-                font-size: 0.9rem;
-            }
-
             .travel-grid {
                 grid-template-columns: 1fr;
             }
 
+            /* Mobile navigation */
+            nav .container {
+                flex-wrap: wrap;
+            }
+
+            .mobile-nav-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                gap: 0.5rem;
+                padding: 1rem 0;
+                align-items: flex-start;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                width: 100%;
+            }
+
+            nav li {
+                width: 100%;
+            }
+
+            nav a {
+                display: block;
+                padding: 0.5rem 0;
+            }
+
             /* Hide interactive demos on mobile */
             #demo1 iframe,
-            #demo2 iframe {
+            #demo2 iframe,
+            #reading-list iframe {
                 display: none;
             }
 
             .mobile-demo-placeholder {
                 display: flex;
+            }
+
+            /* Make PDFs more mobile friendly */
+            .cv-embed,
+            .slideshow-embed {
+                height: 500px;
+            }
+
+            /* Adjust container padding */
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            /* Reduce profile photo size */
+            .profile-photo,
+            .profile-photo-placeholder {
+                width: 150px;
+                height: 150px;
+            }
+
+            /* Better text sizing */
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -411,8 +500,14 @@
     
     <nav>
         <div class="container">
-            <div class="logo">Michael Khalfin</div>
-            <ul>
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <div class="logo">Michael Khalfin</div>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button class="theme-toggle" id="themeToggle">🌙</button>
+                    <button class="mobile-nav-toggle" id="mobileNavToggle">☰</button>
+                </div>
+            </div>
+            <ul class="nav-menu" id="navMenu">
                 <li><a href="#home" class="nav-link active">Home</a></li>
                 <li><a href="#cv" class="nav-link">CV</a></li>
                 <li><a href="#slides" class="nav-link">Slides</a></li>
@@ -420,7 +515,6 @@
                 <li><a href="#demo2" class="nav-link">Demo 2</a></li>
                 <li><a href="#reading-list" class="nav-link">Reading List</a></li>
                 <li><a href="#about" class="nav-link">About Me</a></li>
-                <li><button class="theme-toggle" id="themeToggle">🌙</button></li>
             </ul>
         </div>
     </nav>
@@ -514,6 +608,7 @@
 
         <!-- Reading List Page -->
         <div id="reading-list" class="page">
+            <h2>Reading List</h2>
             <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem;">
                 This is a personal (and incomplete) reading list that I'm hosting on my website for convenience
                 and in case anyone is interested. Nodes represent papers and books, edges show literature I'm
@@ -521,6 +616,12 @@
                 effectively than randomly reading papers.
             </p>
             <iframe src="papers_graph.html" style="width: 100%; height: 100vh; border: none;"></iframe>
+            <div class="mobile-demo-placeholder">
+                <div class="message">
+                    <strong>The interactive reading list graph is designed for desktop viewing.</strong><br><br>
+                    Please visit this page on a computer to explore the full interactive graph of papers and their connections.
+                </div>
+            </div>
         </div>
 
         <!-- About Me Page -->
@@ -611,7 +712,7 @@
         // Theme toggle
         const themeToggle = document.getElementById('themeToggle');
         const html = document.documentElement;
-        
+
         const currentTheme = localStorage.getItem('theme') || 'light';
         html.setAttribute('data-theme', currentTheme);
         themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
@@ -619,10 +720,18 @@
         themeToggle.addEventListener('click', () => {
             const currentTheme = html.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
+
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+
+        // Mobile navigation toggle
+        const mobileNavToggle = document.getElementById('mobileNavToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        mobileNavToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
         });
 
         // Hash-based navigation
@@ -651,6 +760,8 @@
         // Handle navigation clicks
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
+                // Close mobile menu when a link is clicked
+                navMenu.classList.remove('active');
                 // Let the default behavior happen (hash will update)
                 // The hashchange event will handle the page switch
             });
