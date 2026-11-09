@@ -291,7 +291,8 @@
     </style>
 </head>
 <body>
-    <h1>Demo 1: Collecting Data About Algorithms</h1>
+    <p style="margin-bottom:1rem;font-size:0.95rem"><a href="index.html#ksec" style="color: var(--accent, #2f6fb5); text-decoration:none">← Back to michael-khalfin.github.io</a></p>
+    <h1>Collecting Data About Algorithms: k-Secretary</h1>
 
     <p style="font-size: 1.1rem; margin: 1.5rem 0;">
         An interactive exploration of the performance spectrum of ordinal algorithms for k-secretary.
@@ -468,7 +469,7 @@
             <li>Which quotas \(Q_j\) and potentials \(k\) are most critical?</li>
         </ul>
 
-        <p><strong>Connection to DIAL:</strong> Beyond these immediate observations, the \(\alpha\)-spectrum embodies the core principle of <strong>DIAL (Data-driven Interpretability of Algorithm Logic)</strong> introduced on the front page. By "turning the dial" from \(\alpha = 0\) (optimal) to \(\alpha = 1\) (worst-case), we systematically probe the algorithm's behavior under varying levels of interdiction. This traces the full performance spectrum and maps out a multi-dimensional response surface where performance is a direct function of the interdiction strategy. The broader purpose includes:</p>
+        <p><strong>Why a spectrum:</strong> A single worst-case number says how much is lost when the most damaging decisions are switched off. Sweeping \(\alpha\) from 0 (optimal) to 1 (worst-case) shows everything in between: which decisions cost nothing to lose, which cost a little, and which cost the most. This makes it possible to:</p>
         <ul>
             <li>Understanding the <em>shape of the manifold</em> describing how different interference configurations affect performance</li>
             <li>Applying <em>statistical methods</em> to identify patterns and structure in the performance landscape</li>
