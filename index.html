@@ -1,834 +1,597 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Michael Khalfin</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --text-primary: #2c3e50;
-            --text-secondary: #5a6c7d;
-            --accent: #3498db;
-            --border: #e1e8ed;
-            --nav-bg: #ffffff;
-            --visited: #3498db;
-            --visited-hover: #2980b9;
-        }
-
-        [data-theme="dark"] {
-            --bg-primary: #1a1a1a;
-            --bg-secondary: #2d2d2d;
-            --text-primary: #e4e4e4;
-            --text-secondary: #b0b0b0;
-            --accent: #5dade2;
-            --border: #404040;
-            --nav-bg: #1a1a1a;
-            --visited: #5dade2;
-            --visited-hover: #85c1e9;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background-color: var(--bg-primary);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        nav {
-            background-color: var(--nav-bg);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        nav .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        nav .logo {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            transition: color 0.3s ease;
-            font-weight: 500;
-        }
-
-        nav a:hover, nav a.active {
-            color: var(--accent);
-        }
-
-        .theme-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.3rem;
-            color: var(--text-primary);
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: background-color 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            background-color: var(--bg-secondary);
-        }
-
-        .mobile-nav-toggle {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--text-primary);
-            padding: 0.5rem;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        .hero {
-            display: flex;
-            gap: 3rem;
-            align-items: center;
-            margin-bottom: 3rem;
-        }
-
-        .profile-photo {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--border);
-            flex-shrink: 0;
-        }
-
-        .profile-photo-placeholder {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            border: 3px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            text-align: center;
-            padding: 1rem;
-            flex-shrink: 0;
-        }
-
-        .hero-content h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .hero-content p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-        .contact-links {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .contact-links a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-        }
-
-        h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .slideshow-embed {
-            width: 100%;
-            height: 800px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-secondary);
-        }
-
-        .cv-embed {
-            width: 100%;
-            height: 800px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-secondary);
-        }
-
-        .demo-placeholder {
-            background: var(--bg-secondary);
-            border: 2px dashed var(--border);
-            border-radius: 8px;
-            padding: 3rem;
-            text-align: center;
-            color: var(--text-secondary);
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .demo-placeholder h3 {
-            margin-bottom: 1rem;
-        }
-
-        .world-map-container {
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .world-map {
-            width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-            display: block;
-        }
-
-        .map-legend {
-            text-align: center;
-            margin-top: 1rem;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .country {
-            fill: #ddd;
-            stroke: #fff;
-            stroke-width: 0.5;
-            transition: fill 0.3s ease;
-        }
-
-        [data-theme="dark"] .country {
-            fill: #444;
-            stroke: #666;
-        }
-
-        .country.visited {
-            fill: var(--visited);
-        }
-
-        .country.visited:hover {
-            fill: var(--visited-hover);
-        }
-
-        .tooltip {
-            position: absolute;
-            padding: 8px 12px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            font-size: 0.9rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-
-        .travel-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .travel-card {
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .travel-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .travel-card .image-placeholder {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, var(--accent) 0%, #2980b9 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 500;
-        }
-
-        .travel-card .content {
-            padding: 1.5rem;
-        }
-
-        .travel-card h3 {
-            margin-bottom: 0.5rem;
-        }
-
-        .travel-card p {
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .books-section {
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .books-intro {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            font-size: 1.05rem;
-        }
-
-        .books-list {
-            list-style: none;
-            display: grid;
-            gap: 1rem;
-        }
-
-        .books-list li {
-            padding: 1rem;
-            background: var(--bg-primary);
-            border-radius: 6px;
-            border-left: 3px solid var(--accent);
-        }
-
-        .book-title {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .book-author {
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        .mobile-demo-placeholder {
-            display: none;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
-            min-height: 400px;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
-        }
-
-        .mobile-demo-placeholder img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
-
-        .mobile-demo-placeholder .message {
-            color: var(--text-primary);
-            font-size: 1.1rem;
-            line-height: 1.8;
-            max-width: 600px;
-        }
-
-        .mobile-pdf-download {
-            display: none;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .mobile-pdf-download a {
-            display: inline-block;
-            background: var(--accent);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: opacity 0.3s ease;
-        }
-
-        .mobile-pdf-download a:hover {
-            opacity: 0.9;
-        }
-
-        @media (min-width: 769px) {
-            /* Desktop navigation - always show menu */
-            .nav-menu {
-                display: flex !important;
-            }
-
-            nav .container > div:first-child {
-                width: auto;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .travel-grid {
-                grid-template-columns: 1fr;
-            }
-
-            /* Mobile navigation */
-            nav .container {
-                flex-wrap: wrap;
-            }
-
-            .mobile-nav-toggle {
-                display: block;
-            }
-
-            .nav-menu {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                gap: 0.5rem;
-                padding: 1rem 0;
-                align-items: flex-start;
-            }
-
-            .nav-menu.active {
-                display: flex;
-            }
-
-            nav ul {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-                width: 100%;
-            }
-
-            nav li {
-                width: 100%;
-            }
-
-            nav a {
-                display: block;
-                padding: 0.5rem 0;
-            }
-
-            /* Hide interactive demos on mobile */
-            #demo1 iframe,
-            #demo2 iframe,
-            #reading-list iframe {
-                display: none;
-            }
-
-            .mobile-demo-placeholder {
-                display: flex;
-            }
-
-            /* Hide PDF embeds on mobile, show download instead */
-            .cv-embed,
-            .slideshow-embed {
-                display: none;
-            }
-
-            .mobile-pdf-download {
-                display: block;
-            }
-
-            /* Adjust container padding */
-            .container {
-                padding: 2rem 1rem;
-            }
-
-            /* Reduce profile photo size */
-            .profile-photo,
-            .profile-photo-placeholder {
-                width: 150px;
-                height: 150px;
-            }
-
-            /* Better text sizing */
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Michael Khalfin</title>
+<meta name="description" content="Michael Khalfin, Ph.D. student in Industrial and Systems Engineering at UW–Madison. Practical systems where AI agents do the work, cheap checks verify it, and people's scarce attention goes where it changes the answer.">
+<script>
+  // Set theme before paint to avoid a flash.
+  (function () {
+    var t = localStorage.getItem('theme');
+    if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #f6f7f9;
+    --text: #1d2430;
+    --muted: #5b6676;
+    --accent: #2f6fb5;
+    --accent-soft: #e8f0fa;
+    --border: #e3e7ec;
+    --shadow: 0 1px 2px rgba(20, 30, 50, 0.05);
+  }
+  [data-theme="dark"] {
+    --bg: #15171b;
+    --bg-soft: #1e2127;
+    --text: #e6e8eb;
+    --muted: #a3abb7;
+    --accent: #7fb2ec;
+    --accent-soft: #233243;
+    --border: #2e333b;
+    --shadow: none;
+  }
+
+  html { scroll-padding-top: 5rem; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  p + p { margin-top: 0.9rem; }
+  em { font-style: italic; }
+
+  /* Navigation */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 920px; margin: 0 auto; padding: 0.8rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .logo { font-weight: 650; color: var(--text); font-size: 1.05rem; }
+  .logo:hover { text-decoration: none; }
+  .nav-links { display: flex; gap: 1.4rem; list-style: none; align-items: center; }
+  .nav-links a { color: var(--muted); font-size: 0.95rem; font-weight: 500; }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); text-decoration: none; }
+  .icon-btn {
+    background: none; border: 1px solid transparent; color: var(--text);
+    border-radius: 8px; padding: 0.3rem 0.5rem; cursor: pointer; font-size: 1rem; line-height: 1;
+  }
+  .icon-btn:hover { background: var(--bg-soft); }
+  .menu-btn { display: none; }
+  .nav-right { display: flex; align-items: center; gap: 0.25rem; order: 3; }
+  .nav-links { order: 2; margin-left: auto; }
+  .icon-btn svg { width: 18px; height: 18px; display: block; }
+
+  /* Layout */
+  main { max-width: 760px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+  main.wide { max-width: 920px; }
+  .page { display: none; }
+  .page.active { display: block; }
+  h1 { font-size: 2.2rem; line-height: 1.2; letter-spacing: -0.01em; }
+  h2 { font-size: 1.6rem; line-height: 1.25; margin-bottom: 0.4rem; letter-spacing: -0.01em; }
+  h3 { font-size: 1.2rem; line-height: 1.35; margin-bottom: 0.25rem; }
+  .lede { color: var(--muted); margin-bottom: 2.2rem; }
+  .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 0.8rem; }
+  .meta a { font-weight: 500; }
+  .term { border-bottom: 1px dotted var(--muted); cursor: help; }
+  .note { color: var(--muted); font-size: 0.92rem; }
+
+  /* Home */
+  .hero { display: flex; gap: 2.2rem; align-items: center; margin-bottom: 2.2rem; }
+  .hero img {
+    width: 150px; height: 150px; border-radius: 50%; object-fit: cover; object-position: 50% 25%;
+    flex-shrink: 0; border: 1px solid var(--border);
+  }
+  .hero .role { color: var(--muted); margin-top: 0.3rem; }
+  .bio { font-size: 1.12rem; }
+  .themes { list-style: none; margin: 2rem 0; border-top: 1px solid var(--border); }
+  .themes li { border-bottom: 1px solid var(--border); }
+  .themes a {
+    display: flex; gap: 1rem; align-items: baseline; padding: 0.85rem 0.2rem; color: var(--text);
+  }
+  .themes a:hover { text-decoration: none; color: var(--accent); }
+  .themes .num { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 0.9rem; width: 1.2rem; flex-shrink: 0; }
+  .themes .arrow { margin-left: auto; color: var(--muted); }
+  .contact { display: flex; flex-wrap: wrap; gap: 0.6rem 1.4rem; margin-top: 1.5rem; font-weight: 500; }
+  .contact-note { margin-top: 0.8rem; }
+  .background { margin-top: 2.2rem; color: var(--muted); font-size: 0.95rem; }
+
+  /* Entries */
+  .entry { padding: 2rem 0; border-top: 1px solid var(--border); }
+  .entry:first-of-type { border-top: none; padding-top: 0; }
+  .links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.1rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-size: 0.9rem; font-weight: 500; padding: 0.35rem 0.8rem;
+    border: 1px solid var(--border); border-radius: 999px; background: var(--bg-soft); color: var(--text);
+  }
+  .pill:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .pill.primary { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+  .desk-only { font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+
+  /* Fields visual */
+  .fields { margin-top: 1.6rem; }
+  .fields-caption { color: var(--muted); font-size: 0.92rem; margin-bottom: 1rem; }
+  .field-group + .field-group { margin-top: 1.1rem; }
+  .field-name {
+    font-size: 0.75rem; font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.45rem;
+  }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 0.6rem; }
+  .tile {
+    display: flex; gap: 0.7rem; align-items: flex-start;
+    padding: 0.75rem 0.8rem; border: 1px solid var(--border); border-radius: 10px; background: var(--bg);
+    box-shadow: var(--shadow);
+  }
+  .tile svg { flex-shrink: 0; width: 26px; height: 26px; color: var(--accent); margin-top: 0.1rem; }
+  .tile b { display: block; font-size: 0.93rem; line-height: 1.3; margin-bottom: 0.15rem; }
+  .tile span { display: block; font-size: 0.82rem; line-height: 1.4; color: var(--muted); }
+
+  /* reMarkable loop */
+  .loop {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin: 1.4rem 0 0.4rem;
+    counter-reset: step;
+  }
+  .loop div {
+    position: relative; padding: 0.7rem 0.75rem; border-radius: 10px;
+    background: var(--bg-soft); border: 1px solid var(--border); font-size: 0.86rem; line-height: 1.4;
+  }
+  .loop div::before {
+    counter-increment: step; content: counter(step);
+    display: inline-block; font-size: 0.72rem; font-weight: 700; color: var(--accent);
+    background: var(--accent-soft); border-radius: 999px; width: 1.3rem; height: 1.3rem;
+    text-align: center; line-height: 1.3rem; margin-bottom: 0.35rem;
+  }
+  .loop div b { display: block; font-size: 0.9rem; }
+  .loop-back { font-size: 0.82rem; color: var(--muted); text-align: right; }
+
+  figure { margin: 1.4rem 0 0.2rem; }
+  figure img { width: 100%; border-radius: 8px; border: 1px solid var(--border); background: #fff; display: block; }
+  figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; }
+
+  /* Publications */
+  .pubs { list-style: none; }
+  .pubs li { padding: 1rem 0; border-top: 1px solid var(--border); }
+  .pubs li:first-child { border-top: none; }
+  .pubs .venue { color: var(--muted); font-size: 0.95rem; }
+
+  /* CV */
+  .pdf-frame { width: 100%; height: 85vh; border: 1px solid var(--border); border-radius: 8px; margin-top: 1.2rem; }
+
+  /* Reading list */
+  .graph-frame { width: 100%; height: 85vh; border: 1px solid var(--border); border-radius: 8px; margin-top: 1.2rem; background: #fff; }
+  .mobile-only { display: none; }
+
+  /* About */
+  .travel { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; margin: 1.2rem 0 2.5rem; }
+  .card { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--bg-soft); }
+  .card img { width: 100%; height: 190px; object-fit: cover; display: block; }
+  .card div { padding: 1rem 1.1rem 1.2rem; }
+  .card h3 { font-size: 1.05rem; }
+  .card p { font-size: 0.92rem; color: var(--muted); }
+  .books { list-style: none; margin-top: 0.8rem; }
+  .books li { padding: 0.55rem 0; border-top: 1px solid var(--border); }
+  .books li:first-child { border-top: none; }
+  .books i { color: var(--muted); }
+
+  footer { margin-top: 4rem; color: var(--muted); font-size: 0.85rem; }
+
+  @media (max-width: 760px) {
+    body { font-size: 16px; }
+    main { padding: 2rem 1.2rem 4rem; }
+    .menu-btn { display: inline-block; }
+    .nav-right { order: 2; }
+    .nav-links { order: 3; margin-left: 0; }
+    .nav-inner { flex-wrap: wrap; }
+    .nav-links {
+      display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 0;
+      padding-bottom: 0.4rem;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { display: block; padding: 0.45rem 0; }
+    .hero { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
+    .hero img { width: 112px; height: 112px; }
+    h1 { font-size: 1.85rem; }
+    h2 { font-size: 1.4rem; }
+    .loop { grid-template-columns: 1fr 1fr; }
+    .graph-frame { display: none; }
+    .mobile-only { display: block; }
+    .pdf-frame { height: 70vh; }
+  }
+</style>
 </head>
 <body>
-    <div class="tooltip" id="tooltip"></div>
-    
-    <nav>
-        <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <div class="logo">Michael Khalfin</div>
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                    <button class="theme-toggle" id="themeToggle">🌙</button>
-                    <button class="mobile-nav-toggle" id="mobileNavToggle">☰</button>
-                </div>
-            </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#cv" class="nav-link">CV</a></li>
-                <li><a href="#slides" class="nav-link">Slides</a></li>
-                <li><a href="#demo1" class="nav-link">Demo 1</a></li>
-                <li><a href="#demo2" class="nav-link">Demo 2</a></li>
-                <li><a href="#reading-list" class="nav-link">Reading List</a></li>
-                <li><a href="#about" class="nav-link">About Me</a></li>
-            </ul>
-        </div>
-    </nav>
 
-    <div class="container">
-        <!-- Home Page -->
-        <div id="home" class="page active">
-            <div class="hero">
-                <img src="images/web_profile.jpg" alt="Michael Khalfin" class="profile-photo">
-                <div class="hero-content">
-                    <h1>Michael Khalfin</h1>
-                    <p>Fourth-year student at Rice University</p>
-                    <p>B.S. Operations Research | B.A. Mathematics</p>
-                    <p style="margin-top: 1.5rem;">I am broadly interested in mathematical programming, online algorithms, and optimization under uncertainty.</p>
-                    <div class="contact-links">
-                        <a href="mailto:mlkpad14@gmail.com">mlkpad14@gmail.com</a>
-                    </div>
-                </div>
-            </div>
-            
-            <h2>Summary</h2>
-            <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem;">
-                I'm a fourth-year undergraduate at Rice University graduating in May 2026 with a B.S. in Operations Research and a B.A. in Mathematics. I spent Spring 2024 studying abroad at Budapest Semesters in Mathematics, where I deepened my understanding of discrete math and combinatorics.
-            </p>
-            <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem; margin-top: 1rem;">
-                My research focuses on interpretable algorithms and data-driven optimization. Inspired by my mentors, Sebastian Perez-Salazar and Emma Savannah Johnson, and my incredible team at Sandia National Labs, I am developing a framework called DIAL: Data-driven Interpretability of Algorithm Logic. 
-            </p>
-            <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem; margin-top: 1rem;">
-                The goal of DIAL is to understand algorithms using polyhedral abstract interpretation. Once we have embedded or over-approximated an algorithm as a polytope, we can equip this polytope with an objective to optimize, resulting in a linear program (LP). The framework is named 'DIAL' because it allows us to systematically probe this LP. By "turning a dial," we can decide how much to interdict the optimization. This traces the full spectrum of performance—from the unconstrained optimum (the max solution) to the fully adversarial, worst-case outcome (the min-max solution). This process maps out a multi-dimensional response surface, where the algorithm's objective value is a direct function of the interdiction strategy.
-            </p>
-            <p style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem; margin-top: 1rem;">
-                This website contains several of my research ideas surrounding DIAL, including slides, a demo on ordinal threshold algorithms for k-secretary, and applications to neural network interpretability.
-            </p>
-        </div>
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="#home">Michael Khalfin</a>
+    <div class="nav-right">
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg></button>
+      <button class="icon-btn menu-btn" id="menuToggle" aria-label="Menu">☰</button>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#research" class="nav-link">Research</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#publications" class="nav-link">Publications</a></li>
+      <li><a href="#cv" class="nav-link">CV</a></li>
+      <li><a href="#reading-list" class="nav-link">Reading list</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+    </ul>
+  </div>
+</nav>
 
-        <!-- CV Page -->
-        <div id="cv" class="page">
-            <h2>Curriculum Vitae</h2>
-            <div class="cv-embed">
-                <!-- Replace with your CV PDF -->
-                <embed src="cv.pdf" type="application/pdf" width="100%" height="100%">
-            </div>
-            <div class="mobile-pdf-download">
-                <a href="cv.pdf" download>Download CV (PDF)</a>
-            </div>
-        </div>
+<main id="main">
 
-        <div id="slides" class="page">
-            <h2>Sandia National Laboratories Slides</h2>
-            <div class="slideshow-embed">
-                <embed src="Uncertainty_Quantification_for_Systems.pdf" type="application/pdf" width="100%" height="100%">
-            </div>
-            <div class="mobile-pdf-download">
-                <a href="Uncertainty_Quantification_for_Systems.pdf" download>Download Slides (PDF)</a>
-            </div>
-            <p style="color: var(--text-secondary); margin-top: 1rem; font-size: 1rem;">
-                PDF slideshow summarizing some of my Sandia National Laboratories work.
-            </p>
-        </div>
-
-        <!-- Demo 1 Page -->
-        <div id="demo1" class="page">
-            <iframe src="demo1.html" style="width: 100%; height: 100vh; border: none;"></iframe>
-            <div class="mobile-demo-placeholder">
-                <div class="message">
-                    <strong>This interactive demo is designed for desktop viewing.</strong><br><br>
-                    Please visit this page on a computer to interact with the DIAL framework and explore the k-secretary problem visualization.
-                </div>
-            </div>
-        </div>
-
-        <!-- Demo 2 Page -->
-        <div id="demo2" class="page">
-            <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem;">
-                This demo was created in collaboration with <a href="https://seniormars.com/" style="color: var(--accent);" target="_blank">Charlie Cruz</a>
-                and Burton Alexander as the final project for my course
-                <a href="https://akyrillidis.github.io/comp414-514" style="color: var(--accent);" target="_blank">COMP414 - Algorithms, Complexity, and Approximation</a>.
-            </p>
-            <iframe src="demo2/index.html" style="width: 100%; height: 100vh; border: none;"></iframe>
-            <div class="mobile-demo-placeholder">
-                <div class="message">
-                    <strong>This interactive demo is designed for desktop viewing.</strong><br><br>
-                    Please visit this page on a computer to interact with the DIAL framework and explore the neural network interpretability visualization.
-                </div>
-            </div>
-
-            <div style="background: var(--bg-secondary); border-radius: 8px; padding: 2rem; margin-top: 2rem;">
-                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Future Work</h3>
-                <p style="color: var(--text-secondary); line-height: 1.8;">
-                    The main directions for future research include: expanding this framework to substantially bigger neural networks,
-                    applying DIAL to trained neural networks using the polytope representation, and investigating whether this
-                    framework can be extended to more complex architectures including Recurrent Neural Networks (RNNs),
-                    Convolutional Neural Networks (CNNs), and most interestingly, Transformer models.
-                </p>
-            </div>
-        </div>
-
-        <!-- Reading List Page -->
-        <div id="reading-list" class="page">
-            <h2>Reading List</h2>
-            <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem;">
-                This is a personal (and incomplete) reading list that I'm hosting on my website for convenience
-                and in case anyone is interested. Nodes represent papers and books, edges show literature I'm
-                associating together, and the overall graph structure helps me organize my learning more
-                effectively than randomly reading papers.
-            </p>
-            <iframe src="papers_graph.html" style="width: 100%; height: 100vh; border: none;"></iframe>
-            <div class="mobile-demo-placeholder">
-                <div class="message">
-                    <strong>The interactive reading list graph is designed for desktop viewing.</strong><br><br>
-                    Please visit this page on a computer to explore the full interactive graph of papers and their connections.
-                </div>
-            </div>
-        </div>
-
-        <!-- About Me Page -->
-        <div id="about" class="page">
-            <h2>About Me</h2>
-            
-            <!-- <h3>Where I've Traveled</h3> -->
-            <!-- <div class="world-map-container"> -->
-            <!-- <img src="images/map.png" alt="Map" class="world-map"> -->
-            <!-- </div> -->
-
-            <!-- <br> -->
-            <h3>Travel Stories</h3>
-            <div class="travel-grid">
-                <div class="travel-card">
-                    <img src="images/travel1.jpg" alt="Story 1">
-                    <div class="content">
-                        <h3>Harvesting Flowers in Alaska</h3>
-                        <p>For several weeks, I worked on a small peonies farm in Homer, AK. We picked, cleaned, and packed the flowers for shipping. The living experience was really rustic. It was nice to live in nature, as it felt peaceful and restful.</p>
-                    </div>
-                </div>
-
-                <div class="travel-card">
-                    <img src="images/travel2.jpg" alt="Story 2">
-                    <div class="content">
-                        <h3>Chess @ Széchenyi Bath</h3>
-                        <p>My first time meeting "chess tourists" was in the Hungarian thermal bath house. They were visiting from Denmark and Moldova. My friend and I and three Kazakh college students were their challengers; we had a tournament lasting several hours!</p>
-                    </div>
-                </div>
-
-                <div class="travel-card">
-                    <img src="images/travel3.jpg" alt="Story 3">
-                    <div class="content">
-                        <h3>Biking in Hungary</h3>
-                        <p>My friend and I planned a trip to Eger. I assumed we were taking public transportation, but little did I know that we would cycle ~30 miles that day. During the cycling, we bought and drank a whole liter of grape juice.</p>
-                    </div>
-                </div>
-
-                <div class="travel-card">
-                    <img src="images/travel4.jpg" alt="Story 4">
-                    <div class="content">
-                        <h3>Traditional Bavarian Breakfast</h3>
-                        <p>I was visiting my friend at the University of Regensburg for his 21st birthday. After a night of sports pubs and debauchery, he treated us to a traditional sausage, pretzel, and coffee breakfast.</p>
-                    </div>
-                </div>
-
-                <div class="travel-card">
-                    <img src="images/travel5.jpg" alt="Story 5">
-                    <div class="content">
-                        <h3>Polar Plunge</h3>
-                        <p>One of my favorite activities is polar plunging. It is a test of my discipline and feels so great after a dry sauna. This picture is of me in a village near Stockholm in 33 degree Fahrenheit water.</p>
-                    </div>
-                </div>
-            </div>
-
-            <h3>Books I Love</h3>
-            <div class="books-section">
-                <p class="books-intro">
-                    I enjoy reading many genres of books including philosophy, history, novels, and sci-fi.
-                </p>
-                <ul class="books-list">
-                    <li>
-                        <span class="book-title">The Unbearable Lightness of Being</span>
-                        <span class="book-author">by Milan Kundera</span>
-                    </li>
-                    <li>
-                        <span class="book-title">The Glass Bead Game</span>
-                        <span class="book-author">by Hermann Hesse</span>
-                    </li>
-                    <li>
-                        <span class="book-title">Zen and the Art of Motorcycle Maintenance</span>
-                        <span class="book-author">by Robert Pirsig</span>
-                    </li>
-                    <li>
-                        <span class="book-title">The Little Prince</span>
-                        <span class="book-author">by Antoine de Saint-Exupéry</span>
-                    </li>
-                    <li>
-                        <span class="book-title">The Housekeeper and the Professor</span>
-                        <span class="book-author">by Yōko Ogawa</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
+  <!-- ============ HOME ============ -->
+  <section id="home" class="page">
+    <div class="hero">
+      <img src="images/web/profile.jpg" alt="Michael Khalfin" width="150" height="150">
+      <div>
+        <h1>Michael Khalfin</h1>
+        <p class="role">Ph.D. student, Industrial and Systems Engineering (optimization)<br>University of Wisconsin–Madison</p>
+      </div>
     </div>
 
-    <script>
-        // Theme toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const html = document.documentElement;
+    <p class="bio">
+      I study where a person's scarce attention adds the most value once machines do most of the cognitive work.
+      I work on practical theory, theory that ends in something a team can deploy: loops where AI agents draft,
+      cheap checks verify, and experts answer only the questions that change the answer.
+    </p>
 
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        html.setAttribute('data-theme', currentTheme);
-        themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+    <ul class="themes">
+      <li><a href="#llm-judge"><span class="num">1</span><span>When a cheap LLM judge can stand in for experts</span><span class="arrow">→</span></a></li>
+      <li><a href="#sandia"><span class="num">2</span><span>Verifying AI-written code</span><span class="arrow">→</span></a></li>
+      <li><a href="#dcp"><span class="num">3</span><span>Choosing which costly data to collect</span><span class="arrow">→</span></a></li>
+      <li><a href="#remarkable"><span class="num">4</span><span>Human–AI elicitation loops</span><span class="arrow">→</span></a></li>
+    </ul>
 
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    <div class="contact">
+      <a href="mailto:mlkpad14@gmail.com">mlkpad14@gmail.com</a>
+      <a href="https://www.linkedin.com/in/michael-khalfin/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/michael-khalfin" target="_blank" rel="noopener">GitHub</a>
+      <a href="cv.pdf">CV (PDF)</a>
+    </div>
+    <p class="note contact-note">I like hearing from people building AI systems that work alongside experts.</p>
 
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
-        });
+    <p class="background">
+      Before Wisconsin: B.S. in Operations Research and B.A. in Mathematics at Rice University (2022–2026), with a semester at
+      Budapest Semesters in Mathematics. Operations research intern at Sandia National Laboratories since 2025.
+    </p>
+  </section>
 
-        // Mobile navigation toggle
-        const mobileNavToggle = document.getElementById('mobileNavToggle');
-        const navMenu = document.getElementById('navMenu');
+  <!-- ============ RESEARCH ============ -->
+  <section id="research" class="page">
+    <h2>Research</h2>
+    <p class="lede">Most of this work is unpublished and shared with collaborators, so this page gives a taste rather than the papers.</p>
 
-        mobileNavToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-        });
+    <article class="entry" id="llm-judge">
+      <h3>When can a cheap AI judge stand in for experts?</h3>
+      <p class="meta">2026–present · Ph.D. research, UW–Madison</p>
+      <p>
+        Expert feedback is scarce. An <span class="term" title="A language model asked to grade or compare outputs the way an expert would.">LLM judge</span>
+        is cheap but biased. I'm developing a method that combines a small weekly stream of expert feedback with abundant
+        LLM judgments to keep a deployed model accurate.
+      </p>
+      <p>
+        It comes with an accuracy guarantee that is known before any data are collected, and with planning numbers:
+        how many questions should go to the LLM and how many to the experts. Claude is my research partner on this work,
+        not just a coding tool: more than 40 AI-drafted working documents became one theory and one algorithm.
+      </p>
+    </article>
 
-        // Hash-based navigation
-        const navLinks = document.querySelectorAll('.nav-link');
-        const pages = document.querySelectorAll('.page');
+    <article class="entry" id="dcp">
+      <h3>Which costly data are worth collecting?</h3>
+      <p class="meta">2025–2026 · with Emma Savannah Johnson</p>
+      <p>
+        When data are expensive, you want the measurements that pin down the numbers your decision rests on.
+        My method does this without assuming a prior or a noise model, and it writes the problem as a standard
+        <span class="term" title="A mixed-integer program: the format that off-the-shelf optimization solvers such as Gurobi take as input.">mixed-integer program</span>
+        that existing solvers can run today. Working with Claude, I scaled it to a 6.6-million-variable school-outbreak
+        model and carried it into problems across biology, economics, and engineering.
+      </p>
+      <div class="links">
+        <a class="pill primary" href="papers/dcp-working-paper-sections-1-2.pdf">Working paper (Sections 1–2), PDF</a>
+      </div>
 
-        function showPage(hash) {
-            // Remove # from hash, default to 'home' if no hash
-            const targetId = hash ? hash.substring(1) : 'home';
+      <div class="fields" aria-label="Applications of data collection prioritization">
+        <p class="fields-caption">
+          One formulation, eleven problems. The questions are not always measurements: legal requests,
+          record retrievals, and waiting for an event all count.
+        </p>
 
-            // Check if the target page exists
-            const targetPage = document.getElementById(targetId);
-            if (!targetPage) return;
+        <div class="field-group">
+          <div class="field-name">Public health</div>
+          <div class="tiles">
+            <div class="tile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 4l9 6.5"/><path d="M5 9.5V20h14V9.5"/><path d="M10 20v-5h4v5"/></svg>
+              <div><b>School outbreak</b><span>Who was infected, and when? Test a person for a time window.</span></div>
+            </div>
+            <div class="tile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5s-6 6.8-6 11a6 6 0 0 0 12 0c0-4.2-6-11-6-11Z"/><path d="M9.5 15a2.5 2.5 0 0 0 2.5 2.5"/></svg>
+              <div><b>Water contamination</b><span>Where and when did a contaminant enter? Sample at finer tolerances.</span></div>
+            </div>
+          </div>
+        </div>
 
-            // Update active states
-            navLinks.forEach(l => l.classList.remove('active'));
-            const activeLink = document.querySelector(`.nav-link[href="#${targetId}"]`);
-            if (activeLink) activeLink.classList.add('active');
+        <div class="field-group">
+          <div class="field-name">Biology</div>
+          <div class="tiles">
+            <div class="tile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c3-4 7-5 11-3l3-2v10l-3-2c-4 2-8 1-11-3Z"/><circle cx="7.5" cy="11.5" r="0.6" fill="currentColor"/></svg>
+              <div><b>Food webs</b><span>Who eats whom? Buy gut-content and diet studies.</span></div>
+            </div>
+            <div class="tile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="9" ry="7"/><path d="M7 12h3l2-3 2 6 2-3h1"/></svg>
+              <div><b>Metabolic flux</b><span>What are the flows inside a cell? Buy isotope tracers.</span></div>
+            </div>
+            <div class="tile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3c0 6 8 6 8 9s-8 3-8 9"/><path d="M16 3c0 6-8 6-8 9s8 3 8 9"/><path d="M9.5 6.5h5M9.5 17.5h5"/></svg>
+              <div><b>Haplotype phase</b><span>Which chromosome copy carries each allele? Run assays that compare two sites.</span></div>
+            </div>
+          </div>
+        </div>
 
-            pages.forEach(page => page.classList.remove('active'));
-            targetPage.classList.add('active');
+        <div class="field-group">
+          <div class="field-name">Engineering</div>
+          <div class="tiles">
+            <div class="tile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21 9 3M19 21 15 3"/><path d="M12 5v2M12 10v3M12 16v3"/></svg>
+              <div><b>Traffic tomography</b><span>How do vehicles of each class flow? Place sensors of increasing resolution.</span></div>
+            </div>
+            <div class="tile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 7V4M12 7V4M17 7V4M7 20v-3M12 20v-3M17 20v-3"/><path d="m10 10 4 4M14 10l-4 4"/></svg>
+              <div><b>Model-based diagnosis</b><span>Which component failed? Choose where to put test probes.</span></div>
+            </div>
+            <div class="tile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+              <div><b>Unmetered solar</b><span>How does load split from solar generation? Decide when and where to meter.</span></div>
+            </div>
+          </div>
+        </div>
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        <div class="field-group">
+          <div class="field-name">Economics and supply chains</div>
+          <div class="tiles">
+            <div class="tile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 4l9 5.5"/><path d="M4 21h16"/><path d="M6 10v8M10 10v8M14 10v8M18 10v8"/></svg>
+              <div><b>Interbank contagion</b><span>Who owes whom? File legal data requests.</span></div>
+            </div>
+            <div class="tile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="13" rx="3"/><path d="M4 11h16"/><circle cx="8" cy="14" r="0.8" fill="currentColor"/><circle cx="16" cy="14" r="0.8" fill="currentColor"/><path d="m7 17-2 3M17 17l2 3"/></svg>
+              <div><b>Suppressed travel demand</b><span>What would demand be at service levels never offered? Run surveys, traces, or pilots.</span></div>
+            </div>
+            <div class="tile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3.5 7.5v9L12 21l8.5-4.5v-9L12 3Z"/><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9"/></svg>
+              <div><b>Supply-chain provenance</b><span>Who shipped each part? Request declarations, audits, or lab tests.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
 
-        // Handle navigation clicks
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                // Close mobile menu when a link is clicked
-                navMenu.classList.remove('active');
-                // Let the default behavior happen (hash will update)
-                // The hashchange event will handle the page switch
-            });
-        });
+    <article class="entry" id="online">
+      <h3>Online decision-making</h3>
+      <p class="meta">Rice University, 2024–2025 · with Sebastian Perez-Salazar</p>
+      <p>
+        Options arrive one at a time and each must be accepted or rejected on the spot, as in hiring from a stream of
+        candidates (the <em>k</em>-secretary problem). I derived closed-form performance guarantees for simple threshold
+        rules, improving the best known ratios by 1.3x.
+      </p>
+      <p>
+        The demo lets you see how these rules hold up as an adversary is allowed to interfere with more of the arrival sequence.
+      </p>
+      <div class="links">
+        <a class="pill" href="demo1.html"><span>Interactive <em>k</em>-secretary demo</span> <span class="desk-only">· best on desktop</span></a>
+      </div>
+    </article>
+  </section>
 
-        // Listen for hash changes
-        window.addEventListener('hashchange', () => {
-            showPage(window.location.hash);
-        });
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects" class="page">
+    <h2>Projects</h2>
+    <p class="lede">Systems I've built, where the theory meets a team, a solver, or my own week.</p>
 
-        // Show initial page based on URL hash
-        showPage(window.location.hash || '#home');
+    <article class="entry" id="sandia">
+      <h3>Verified AI-written code</h3>
+      <p class="meta">Sandia National Laboratories, 2025–present</p>
+      <p>
+        I directed AI agents to write two transpilers from
+        <span class="term" title="Pyomo is a Python library for writing optimization models; Gurobi is a commercial solver with its own fast native interface.">Pyomo to Gurobi</span>
+        that are provably correct for the target class of models. Instead of reviewing every line, I built verifiers:
+        the output had to match a reference on 30 reduced instances and on 21 small models that each test one modeling
+        construct, and every failed check went back to the agent as a new constraint.
+      </p>
+      <p>
+        At 42 million variables, model build time dropped from 117 minutes to under 1. I also built a small
+        domain-specific language so engineers can run studies of 10,000+ models without writing repetitive scripts.
+        A paper on this work is being rewritten.
+      </p>
+    </article>
 
-        // Map tooltip
-        const tooltip = document.getElementById('tooltip');
-        const countries = document.querySelectorAll('.country');
+    <article class="entry" id="remarkable">
+      <h3>Claude ↔ reMarkable elicitation loop</h3>
+      <p class="meta">Personal project, 2026–present · used daily</p>
+      <p>
+        I wanted to work through papers on paper, rather than chatting with a screen. So I built a loop: Claude sends
+        prompts to my reMarkable, reads my handwritten notes, and decides what to ask next.
+      </p>
+      <div class="loop" aria-label="How the loop works">
+        <div><b>Claude asks</b>typesets a question and sends it to the e-ink tablet</div>
+        <div><b>I write</b>answer by hand, on paper-like e-ink</div>
+        <div><b>Claude reads</b>transcribes the handwriting</div>
+        <div><b>Claude updates</b>refits a model of my preferences and picks the next question</div>
+      </div>
+      <p class="loop-back">↺ and around again</p>
+      <p>
+        The proof of concept: eight quick choices between recipes picked out the four of twenty I actually wanted to
+        cook that week. I cooked all four.
+      </p>
+    </article>
 
-        countries.forEach(country => {
-            country.addEventListener('mouseenter', (e) => {
-                const name = country.getAttribute('data-name');
-                tooltip.textContent = name;
-                tooltip.style.opacity = '1';
-            });
+    <article class="entry" id="nn">
+      <h3>Neural network verification and interpretability</h3>
+      <p class="meta">Rice University, 2025 · with <a href="https://seniormars.com/" target="_blank" rel="noopener">Charlie Cruz</a> and Burton Alexander, final project for
+        <a href="https://akyrillidis.github.io/comp414-514" target="_blank" rel="noopener">COMP 414</a></p>
+      <p>
+        I certified the robustness of a small MNIST digit classifier with an
+        <span class="term" title="A linear program that over-approximates what the network can output, so a bound proved on the LP holds for the network.">LP relaxation</span>:
+        for each test digit, a proof that no perturbation up to a given size changes the prediction. We also found
+        interpretable hidden neurons that combine to produce each digit's prediction.
+      </p>
+      <figure>
+        <img src="images/web/nn-robustness.png" alt="Certified robustness rate by digit and perturbation size, 600 test digits" loading="lazy">
+        <figcaption>Share of 600 test digits certified robust at each perturbation size, with 95% confidence intervals.</figcaption>
+      </figure>
+      <div class="links">
+        <a class="pill" href="demo2/index.html"><span>Interactive network demo</span> <span class="desk-only">· best on desktop</span></a>
+        <a class="pill" href="Uncertainty_Quantification_for_Systems.pdf">Sandia talk slides (Oct 2025), PDF</a>
+      </div>
+    </article>
+  </section>
 
-            country.addEventListener('mousemove', (e) => {
-                tooltip.style.left = (e.pageX + 10) + 'px';
-                tooltip.style.top = (e.pageY + 10) + 'px';
-            });
+  <!-- ============ PUBLICATIONS ============ -->
+  <section id="publications" class="page">
+    <h2>Publications</h2>
+    <ul class="pubs" style="margin-top:1rem">
+      <li>
+        <b>Vehicle-to-Everything Communication Using a Roadside Unit for Over-the-Horizon Object Awareness</b>
+        <div class="venue">Michael Khalfin (first author) · <em>IEOM</em> 2023 · oral presentation, winner</div>
+      </li>
+      <li>
+        <b>A Computational Model of the Trans-Synaptic Spread of Pathogenic Tau in Early Alzheimer's Disease</b>
+        <div class="venue">Michael Khalfin (first author) · <em>IMPULSE</em> 2021</div>
+      </li>
+    </ul>
+    <p class="note" style="margin-top:1.5rem">Current work is on the <a href="#research">Research</a> page.</p>
+  </section>
 
-            country.addEventListener('mouseleave', () => {
-                tooltip.style.opacity = '0';
-            });
-        });
-    </script>
+  <!-- ============ CV ============ -->
+  <section id="cv" class="page">
+    <h2>CV</h2>
+    <div class="links" style="margin-top:0.6rem">
+      <a class="pill primary" href="cv.pdf">Open CV (PDF)</a>
+    </div>
+    <iframe class="pdf-frame" data-src="cv.pdf" title="CV"></iframe>
+  </section>
+
+  <!-- ============ READING LIST ============ -->
+  <section id="reading-list" class="page">
+    <h2>Reading list</h2>
+    <p>
+      A personal (and incomplete) reading list, kept here for convenience and in case anyone is interested. Nodes are
+      papers and books, and edges connect work I associate together. Organizing it as a graph helps me read with more
+      direction than picking papers at random.
+    </p>
+    <iframe class="graph-frame" data-src="papers_graph.html" title="Reading list graph"></iframe>
+    <p class="note mobile-only" style="margin-top:1rem">The interactive graph is built for a larger screen. <a href="papers_graph.html">Open it anyway</a>.</p>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="page">
+    <h2>About me</h2>
+    <h3 style="margin-top:1.2rem">Travel stories</h3>
+    <div class="travel">
+      <div class="card">
+        <img src="images/web/travel1.jpg" alt="Peony farm in Homer, Alaska" loading="lazy">
+        <div><h3>Harvesting flowers in Alaska</h3>
+          <p>For several weeks, I worked on a small peony farm in Homer, AK. We picked, cleaned, and packed the flowers for shipping. Life there was rustic, and living in nature felt peaceful and restful.</p></div>
+      </div>
+      <div class="card">
+        <img src="images/web/travel2.jpg" alt="Chess at Széchenyi Bath, Budapest" loading="lazy">
+        <div><h3>Chess at Széchenyi Bath</h3>
+          <p>I met my first "chess tourists" in a Hungarian thermal bath house. They were visiting from Denmark and Moldova. My friend, three Kazakh college students, and I were their challengers, and the tournament lasted several hours.</p></div>
+      </div>
+      <div class="card">
+        <img src="images/web/travel3.jpg" alt="Cycling in Hungary" loading="lazy">
+        <div><h3>Biking in Hungary</h3>
+          <p>My friend and I planned a trip to Eger. I assumed we were taking public transportation; instead we cycled about 30 miles that day, and drank a whole liter of grape juice along the way.</p></div>
+      </div>
+      <div class="card">
+        <img src="images/web/travel4.jpg" alt="Bavarian breakfast in Regensburg" loading="lazy">
+        <div><h3>Traditional Bavarian breakfast</h3>
+          <p>I visited my friend at the University of Regensburg for his 21st birthday. After a long night out, he treated us to a traditional breakfast of sausage, pretzels, and coffee.</p></div>
+      </div>
+      <div class="card">
+        <img src="images/web/travel5.jpg" alt="Polar plunge near Stockholm" loading="lazy" style="object-position: 50% 30%">
+        <div><h3>Polar plunge</h3>
+          <p>Polar plunging is one of my favorite things to do: a test of discipline that feels great after a dry sauna. This is me in a village near Stockholm, in 33°F water.</p></div>
+      </div>
+    </div>
+
+    <h3>Books I love</h3>
+    <p class="note">I read across philosophy, history, novels, and science fiction.</p>
+    <ul class="books">
+      <li>The Unbearable Lightness of Being · <i>Milan Kundera</i></li>
+      <li>The Glass Bead Game · <i>Hermann Hesse</i></li>
+      <li>Zen and the Art of Motorcycle Maintenance · <i>Robert Pirsig</i></li>
+      <li>The Little Prince · <i>Antoine de Saint-Exupéry</i></li>
+      <li>The Housekeeper and the Professor · <i>Yōko Ogawa</i></li>
+    </ul>
+  </section>
+  <footer>© Michael Khalfin · <a href="mailto:mlkpad14@gmail.com">mlkpad14@gmail.com</a></footer>
+</main>
+
+<script>
+  // Theme toggle
+  var root = document.documentElement;
+  document.getElementById('themeToggle').addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+
+  // Mobile menu
+  var navLinks = document.getElementById('navLinks');
+  document.getElementById('menuToggle').addEventListener('click', function () {
+    navLinks.classList.toggle('open');
+  });
+
+  // Hash routing: "#research" shows a page; "#dcp" shows the page that contains it and scrolls to it.
+  // Old links (#demo1, #demo2, #slides) map to where that content lives now.
+  var aliases = { demo1: 'online', demo2: 'nn', slides: 'nn' };
+  var pages = document.querySelectorAll('.page');
+  var main = document.getElementById('main');
+
+  function route() {
+    var id = (location.hash || '#home').slice(1);
+    id = aliases[id] || id;
+    var target = document.getElementById(id);
+    if (!target) { id = 'home'; target = document.getElementById('home'); }
+    var page = target.classList.contains('page') ? target : target.closest('.page');
+    if (!page) return;
+
+    pages.forEach(function (p) { p.classList.toggle('active', p === page); });
+    document.querySelectorAll('.nav-link').forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + page.id);
+    });
+    main.classList.toggle('wide', page.id === 'reading-list' || page.id === 'cv' || page.id === 'about');
+    page.querySelectorAll('iframe[data-src]').forEach(function (f) {
+      if (!f.getAttribute('src')) f.setAttribute('src', f.getAttribute('data-src'));
+    });
+    navLinks.classList.remove('open');
+    document.title = page.id === 'home' ? 'Michael Khalfin'
+      : page.querySelector('h2').textContent + ' · Michael Khalfin';
+
+    if (target === page) window.scrollTo(0, 0);
+    else target.scrollIntoView();
+  }
+  window.addEventListener('hashchange', route);
+  route();
+</script>
 </body>
 </html>
