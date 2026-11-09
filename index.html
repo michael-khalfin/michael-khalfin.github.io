@@ -155,8 +155,8 @@
   .figrow { display: grid; gap: 1.1rem; margin-top: 1.4rem; }
   .figrow.two { grid-template-columns: 1fr 1fr; }
   .figrow.three { grid-template-columns: repeat(3, 1fr); }
-  .figrow .frame { padding: 1rem; height: 230px; }
-  .figrow.three .frame { height: 200px; padding: 0.7rem; }
+  .figrow.two { gap: 1.4rem 1.2rem; }
+  .figrow .frame { padding: 0.9rem; aspect-ratio: 16 / 8; }
   .figrow img { max-height: 100%; width: auto; max-width: 100%; object-fit: contain; }
   .stepper { margin-top: 1.4rem; }
   .stepper .frame { padding: 1.2rem; }
@@ -313,12 +313,7 @@
         <div class="cap"><span class="tag">Interactive demo</span><b>Inside a tiny neural network</b></div>
       </a>
 
-      <a class="gcard wide" href="#ksec">
-        <div class="thumb"><img src="images/web/ksec-spectrum.png" alt="Three plots from the k-secretary demo" loading="lazy"></div>
-        <div class="cap"><span class="tag">Interactive demo</span><b>Which decisions does an optimal algorithm need?</b></div>
-      </a>
-
-      <a class="gcard" href="#online">
+      <a class="gcard wide" href="#online">
         <div class="thumb soft"><svg class="dg" viewBox="0 0 560 300" aria-hidden="true" aria-label="A threshold rule: watch the first arrivals, then take the first ones that beat the best seen so far">
 <rect x="34" y="36" width="177" height="207" rx="8" class="accbox" opacity="0.55"/>
 <rect x="40" y="159.3" width="14" height="75.7" rx="3" class="acc" opacity="0.55"/>
@@ -350,12 +345,16 @@
 <rect x="496" y="185.9" width="14" height="49.1" rx="3" class="faint"/>
 <rect x="515" y="189.8" width="14" height="45.2" rx="3" class="faint"/>
 <path d="M34 110.9 H 534" class="s-acc" stroke-width="1.5" stroke-dasharray="5 4" fill="none"/>
-<text x="532" y="103" text-anchor="end" font-size="12" class="acc">best seen while watching</text>
+<text x="40" y="103" font-size="12" class="acc">best seen while watching</text>
 <text x="122" y="259" text-anchor="middle" font-size="13" font-weight="600" class="acc">watch</text>
 <text x="372" y="259" text-anchor="middle" font-size="13" font-weight="600">then take what beats it</text>
 <text x="34" y="283" font-size="12" class="m">arrivals, one at a time →</text>
 </svg></div>
         <div class="cap"><span class="tag">Research, Rice</span><b>Choosing on the spot</b></div>
+      </a>
+      <a class="gcard" href="#about">
+        <div class="thumb"><img class="cover" src="images/web/travel2.jpg" alt="Chess at Széchenyi Bath, Budapest" loading="lazy" style="object-position:center"></div>
+        <div class="cap"><span class="tag">About me</span><b>Chess in a Budapest bath, and other stories</b></div>
       </a>
     </div>
 
@@ -382,13 +381,6 @@
           <div class="frame"><img src="images/web/judge-sheet.png" alt="A tilted sheet above the floor; its height over a point is that judge's verdict" loading="lazy"></div>
           <figcaption>A verdict is a height: one comparison is one tilted sheet over the floor.</figcaption>
         </figure>
-        <figure class="fig">
-          <div class="frame"><img src="images/web/judge-drop.png" alt="The panel as a point above a plane, dropped straight down" loading="lazy"></div>
-          <figcaption>Real panels sit off the floor. Drop straight down to read what they value.</figcaption>
-        </figure>
-      </div>
-
-      <div class="figrow three">
         <figure class="fig">
           <div class="frame"><img src="images/web/judge-week.png" alt="One week: many cheap LLM answers and one expensive panel answer update one estimate" loading="lazy"></div>
           <figcaption>One week: many cheap answers, one expensive one, one estimate.</figcaption>
@@ -503,7 +495,7 @@
 <rect x="496" y="185.9" width="14" height="49.1" rx="3" class="faint"/>
 <rect x="515" y="189.8" width="14" height="45.2" rx="3" class="faint"/>
 <path d="M34 110.9 H 534" class="s-acc" stroke-width="1.5" stroke-dasharray="5 4" fill="none"/>
-<text x="532" y="103" text-anchor="end" font-size="12" class="acc">best seen while watching</text>
+<text x="40" y="103" font-size="12" class="acc">best seen while watching</text>
 <text x="122" y="259" text-anchor="middle" font-size="13" font-weight="600" class="acc">watch</text>
 <text x="372" y="259" text-anchor="middle" font-size="13" font-weight="600">then take what beats it</text>
 <text x="34" y="283" font-size="12" class="m">arrivals, one at a time →</text>
@@ -553,11 +545,8 @@
 
     <article class="work flip" id="remarkable">
       <div class="visual">
-        <div class="tablets">
-          <div class="tablet"><img src="images/web/tablet-lab-3.jpg" alt="Tablet page: my hand-drawn sketch on the left, Claude's typeset reading of it on the right, my reply in ink below" loading="lazy"></div>
-          <div class="tablet"><img src="images/web/tablet-lab-10.jpg" alt="Tablet page: a typeset figure and Claude's reply to my earlier note, with my handwritten answer" loading="lazy"></div>
-        </div>
-        <p class="cap-small">Two pages from my research notebook. Left: my sketch, Claude's reading of it beside it, my reply in ink. Right: Claude answers my last note and asks me to say it back; I do, by hand.</p>
+        <div class="tablet" style="max-width:420px;margin:0 auto"><img src="images/web/tablet-lab-3.jpg" alt="A page from my research notebook on the reMarkable" loading="lazy"></div>
+        <p class="cap-small" style="text-align:center">Pages from my research notebook.</p>
       </div>
       <div>
         <p class="meta">Personal · used daily</p>
@@ -588,11 +577,7 @@
     <article class="feature" id="ksec">
       <p class="meta">Interactive demo</p>
       <h3>Which decisions does an optimal algorithm need?</h3>
-      <p class="lead">The best possible rule for the <em>k</em>-secretary problem comes out of a linear program as a table of decisions. The demo switches some of those decisions off and measures what is lost, which shows the steps the rule can't do without.</p>
-      <figure class="fig big">
-        <a class="frame" href="demo1.html" style="display:block;background:#fff"><img src="images/web/ksec-spectrum.png" alt="Three plots: performance as the quality bar is relaxed, which steps are critical, and how often each step is critical" loading="lazy"></a>
-        <figcaption>From the demo, with 30 arrivals and 2 picks: how performance falls as the bar is relaxed (left), and which steps turn out to be critical (middle, right).</figcaption>
-      </figure>
+      <p class="lead">The best possible rule for the <em>k</em>-secretary problem comes out of a linear program as a table of decisions.</p>
       <div class="links"><a class="pill" href="demo1.html"><span>Open the demo</span> <span class="desk-only">· desktop</span></a></div>
     </article>
   </section>
